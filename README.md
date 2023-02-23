@@ -1,4 +1,4 @@
-# Text_And_Dungeons
+# Text & Dungeons
 
 ## Description of the game  
 This project is a text role-playing game where the player controls a hero. The objective is to reach the final boss of the dungeon and kill it all the while collecting weapons, artifacts and potions to kill the boss more easily.  
