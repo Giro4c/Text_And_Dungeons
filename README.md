@@ -5,6 +5,7 @@ This project is a text role-playing game where the player controls a hero. The o
 The player will progress throught the dungeon with typed text commands like "move right", "open top chest", "attack", and other options which will always be displayed at each new turn.  
 
 ## Features and Characteristics  
+- In English  
 - Recognition of commands even without capital letters.  
 - Map can be displayed.  
 - An inventory system. Maximum number of carried item : 2 weapons, 3 artifacts, 5 potions.  
