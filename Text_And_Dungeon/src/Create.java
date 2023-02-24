@@ -394,7 +394,7 @@ public class Create {
 	 */
 	public static Boss[] spawBoss() {
 		Boss[] bosses = new Boss[2];
-		bosses[0] = new Boss("Dragon Cirk", "dungeon", "Destroyer of the Holy Land", 6, 1, 300, 50, 30, 35);
+		bosses[0] = new Boss("Dragon Cirk", "Dungeon", "Destroyer of the Holy Land", 6, 1, 300, 50, 30, 35);
 		bosses[1] = new Boss("V O I D    E T E R N Y S", "Hidden", "Incarnation of the void", -1, -1, 500, 120, 60, 999); // Does not appear on the map unless engages in a fight
 		return bosses;
 	}

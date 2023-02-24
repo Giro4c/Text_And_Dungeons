@@ -13,12 +13,7 @@ public class Game {
 		Boss[] bosses = Create.spawBoss();
 		
 		Message.welcome();
-		Hero hero = new Hero(Message.characterNaming(), 1, 15, 1000, 300, 15, 20);
-		bosses[1].setHP(1);
-		hero.setSpecialActionCount(6);
-		Action.checkHeroLocation(hero, bosses);
-		hero.setX(16);
-		hero.setY(3);
+		Hero hero = new Hero(Message.characterNaming(), 1, 15, 100, 30, 15, 20);
 		// Start coordinates for hero : 1, 15
 		Message.welcome2(Create.createMap(walls, chests, enemies, bosses, hero));
 		
