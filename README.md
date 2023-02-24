@@ -3,6 +3,7 @@
 ## Description of the game  
 This project is a text role-playing game where the player controls a hero. The objective is to reach the final boss of the dungeon and kill it all the while collecting weapons, artifacts and potions to kill the boss more easily.  
 The player will progress throught the dungeon with typed text commands like "move right", "open top chest", "attack", and other options which will always be displayed at each new turn.  
+*Made with Eclipse IDE for Java and DSL Developers*
 
 ## Features and Characteristics  
 - In English  
