@@ -46,7 +46,7 @@ public class Game {
 			}
 			else { // inFight == true
 				if (Create.getMapID() == 1 && hero.getSpecialLocation() == 1) {
-					SpecialAction.bossVoidFight(hero, bosses[1]);
+					SpecialAction.hiddenBossFight(hero, bosses[1]);
 					break;
 				}
 				FightAction.enemiesAttack(hero, enemies, bosses, hero.getSpeed() + 1, FightAction.maxSpeedEnemies(hero.whoIsAround(enemies, bosses), enemies, bosses));

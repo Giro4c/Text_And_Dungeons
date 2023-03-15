@@ -19,6 +19,38 @@ public class SpecialAction {
 		}
 	}
 	
+	/**
+	 * Initialize the next phase in a special boss fight depending on the map and execute the actions associated with the new phase
+	 * @param hero the character who entered the fight
+	 * @param boss the boss to fight
+	 * @param phase the current phase of the boss fight
+	 * @return the phase following the one in the parameters
+	 * @throws InterruptedException
+	 */
+	public static int bossFightNextPhaseInitializing(Hero hero, Boss boss, int phase) throws InterruptedException {
+		++phase;
+		if (Create.getMapID() == 1) {
+			if (phase == 1) {
+				Message.voidFightEntryPhase1(hero, boss);
+				return phase;
+			}
+			else if (phase == 2) {
+				boss.setHP(300);
+				boss.setAtk(50);
+				boss.setDef(30);
+				boss.setSpeed(35);
+				Message.voidFightEntryPhase2(boss);
+				return phase;
+			}
+		}
+		else if (Create.getMapID() == 2) {
+			return phase;
+		}
+		return -1; // Error
+	}
+	public static int bossFightNextPhaseInitializing(Hero hero, Boss boss) throws InterruptedException {
+		return bossFightNextPhaseInitializing(hero, boss, 0);
+	}
 	
 	
 	/**
@@ -27,10 +59,45 @@ public class SpecialAction {
 	 * @param boss the special boss the hero is currently facing in map 1
 	 * @throws InterruptedException
 	 */
-	public static void bossVoidFight(Hero hero, Boss boss) throws InterruptedException {
+	public static void hiddenBossFight(Hero hero, Boss boss) throws InterruptedException {
+		// A Tester -----------------------
 		boolean isHeroTurn = false;
-		int phase = 1;
-		Message.voidFightEntryPhase1(hero, boss);
+		int phase = bossFightNextPhaseInitializing(hero, boss);
+		while (true) {
+			if (boss.getSpeed() > hero.getSpeed()) {
+				boss.attack(hero);
+				if (hero.getHP() <= 0) {
+					break;
+				}
+			}
+			isHeroTurn = true;
+			while (isHeroTurn == true) {
+				Message.showActions(fightActions(boss, phase), 2, 7);
+				System.out.print("What will you do ?" + '\n');
+				String[] command = Message.registerCommand(4);
+				isHeroTurn = executeFightCommand(command, hero, boss, phase);
+			}
+			if (FightAction.isBossDown(boss) == true) {
+				if (boss.getNumPhases() == phase) {
+					Message.bossDefeated(boss);
+				}
+				else {
+					phase = bossFightNextPhaseInitializing(hero, boss, phase);
+				}
+			}
+			if (boss.getSpeed() <= hero.getSpeed()) {
+				boss.attack(hero);
+				if (hero.getHP() <= 0) {
+					break;
+				}
+			}
+		}
+		
+	}
+	
+	public static void bossVoidFight2(Hero hero, Boss boss) throws InterruptedException {
+		boolean isHeroTurn = false;
+		int phase = bossFightNextPhaseInitializing(hero, boss);
 		while (true) {
 			if (boss.getSpeed() > hero.getSpeed()) {
 				boss.attack(hero);
@@ -46,7 +113,7 @@ public class SpecialAction {
 				}
 				if (FightAction.isBossDown(boss) == true) {
 					initializeVoidPhase2(boss);
-					phase = 2;
+					phase = bossFightNextPhaseInitializing(hero, boss, phase);
 					break;
 				}
 			}
