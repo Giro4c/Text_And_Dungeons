@@ -1,4 +1,5 @@
-package the_game;
+package the_game.Deprecated_classes;
+
 /**
  * The class which contains basic characteristics of the dungeon.
  * @author Camille Girodengo

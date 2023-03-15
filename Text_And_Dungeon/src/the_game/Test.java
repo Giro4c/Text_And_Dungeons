@@ -1,6 +1,8 @@
 package the_game;
 import java.util.Random;
 
+import the_game.Deprecated_classes.Create;
+
 public class Test {
 
 	public static void main(String[] args) throws InterruptedException {

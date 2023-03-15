@@ -1,6 +1,15 @@
-package the_game;
+package the_game.Deprecated_classes;
 import java.util.Random;
 
+import the_game.Artifact;
+import the_game.Boss;
+import the_game.Chest;
+import the_game.Enemy;
+import the_game.Hero;
+import the_game.Item;
+import the_game.Message;
+import the_game.Potion;
+import the_game.Weapon;
 import the_game.enemyWarrior_classes.*;
 import the_game.monster_classes.*;
 
@@ -8,7 +17,7 @@ import the_game.monster_classes.*;
  * A class which creates all that is necessary for the game : walls, chests, enemies, bosses, weapons, artifacts, potions, map.
  * Also includes the attributes of the map (dungeon) : width, length, map ID which are all accessible without a class instantiation.
  * @author Camille Girodengo
- *
+ * @deprecated Replaced by package create
  */
 public class Create {
 	

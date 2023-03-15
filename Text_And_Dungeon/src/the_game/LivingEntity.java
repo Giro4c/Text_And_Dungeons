@@ -1,4 +1,7 @@
 package the_game;
+
+import the_game.Deprecated_classes.Create;
+
 /**
  * The class which represent any entity that can be defeated in the game.
  * @author Camille Girodengo

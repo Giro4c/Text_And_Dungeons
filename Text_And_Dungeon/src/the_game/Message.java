@@ -1,6 +1,8 @@
 package the_game;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+
+import the_game.Deprecated_classes.Create;
 /**
  * The class for all system outputs and inputs. Takes care of Player/Game interactions.
  * @author Camille Girodengo

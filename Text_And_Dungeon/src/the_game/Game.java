@@ -1,6 +1,8 @@
 package the_game;
 
 import the_game.action.*;
+import the_game.create.*;
+
 
 /**
  * The main class of the game. Its execution triggers the start of the game.
@@ -14,16 +16,16 @@ public class Game {
 		Message.welcome();
 		Message.mapChoice();
 		
-		Hero hero = Create.createHero();
-		int[][] walls = Create.placeWalls();
+		Hero hero = CreateHero.createHero();
+		int[][] walls = CreateWalls.placeWalls();
 //		--- Not necessary ----
 //		Weapon[] weapons = Create.createWeapons();
 //		Artifact[] artifacts = Create.createArtifacts();
 //		Potion[] potions = Create.createPotions();
 //		--- ------------- ----
-		Chest[] chests = Create.placeChests();
-		Enemy[] enemies = Create.spawnEnemies();
-		Boss[] bosses = Create.spawBoss();
+		Chest[] chests = CreateChests.placeChests();
+		Enemy[] enemies = CreateEnemies.spawnEnemies();
+		Boss[] bosses = CreateBosses.spawBoss();
 		
 		Message.welcome2(Create.createMap(walls, chests, enemies, bosses, hero));
 		

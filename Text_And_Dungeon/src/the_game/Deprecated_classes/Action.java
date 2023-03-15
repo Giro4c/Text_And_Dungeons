@@ -1,4 +1,11 @@
-package the_game;
+package the_game.Deprecated_classes;
+
+import the_game.Boss;
+import the_game.Chest;
+import the_game.Enemy;
+import the_game.Entity;
+import the_game.Hero;
+import the_game.Message;
 
 /**
  * A class which regroup all the possible actions in the game. Includes actions outside and during a fight.
