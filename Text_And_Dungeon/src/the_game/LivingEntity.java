@@ -47,8 +47,8 @@ public class LivingEntity extends Entity {
 	 * ------------------VARIABLES / GETTERS / SETTERS--------------------- *
 	 * -------------------------------------------------------------------- */
 	
-	private int x = 0;
-	private int y = 0;
+	private int x = -1;
+	private int y = -1;
 	private int HP = 100;
 	private int Atk = 20;
 	private int Def = 15;

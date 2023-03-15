@@ -10,24 +10,28 @@ public class Boss extends LivingEntity {
 	 * ---------------------------CONSTRUCTORS----------------------------- *
 	 * -------------------------------------------------------------------- */
 
-	public Boss(String name, String type, String title, int x, int y, int hP, int atk, int def, int vit) {
+	public Boss(String name, String type, String title, int numPhases, int x, int y, int hP, int atk, int def, int vit) {
 		super(name, type + " Boss", x, y, hP, atk, def, vit);
 		this.title = title;
+		this.numPhases = numPhases;
 	}
 
-	public Boss(String name, String type, String title, int hP, int atk, int def, int vit) {
+	public Boss(String name, String type, String title, int numPhases, int hP, int atk, int def, int vit) {
 		super(name, type + " Boss", hP, atk, def, vit);
 		this.title = title;
+		this.numPhases = numPhases;
 	}
 
-	public Boss(String name, String type, String title, int x, int y) {
+	public Boss(String name, String type, String title, int numPhases, int x, int y) {
 		super(name, type + " Boss", x, y);
 		this.title = title;
+		this.numPhases = numPhases;
 	}
 
-	public Boss(String name, String type, String title) {
+	public Boss(String name, String type, String title, int numPhases) {
 		super(name, type + " Boss");
 		this.title = title;
+		this.numPhases = numPhases;
 	}
 
 	
@@ -37,6 +41,7 @@ public class Boss extends LivingEntity {
 	 * -------------------------------------------------------------------- */
 	
 	private String title;
+	private int numPhases;
 	
 	public String getTitle() {
 		return title;
@@ -44,6 +49,14 @@ public class Boss extends LivingEntity {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public int getNumPhases() {
+		return numPhases;
+	}
+
+	public void setNumPhases(int numPhases) {
+		this.numPhases = numPhases;
 	}
 
 	@Override
