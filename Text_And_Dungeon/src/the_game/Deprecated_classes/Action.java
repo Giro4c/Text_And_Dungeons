@@ -802,7 +802,7 @@ public class Action {
 	public static void specialBossFight(Hero hero, Boss boss) throws InterruptedException {
 		boolean isHeroTurn = false;
 		int phase = 1;
-		Message.specialBossFightEntryPhase1(hero, boss);
+		Message.voidFightEntryPhase1(hero, boss);
 		while (true) {
 			if (boss.getSpeed() > hero.getSpeed()) {
 				boss.attack(hero);
@@ -891,7 +891,7 @@ public class Action {
 		boss.setAtk(50);
 		boss.setDef(30);
 		boss.setSpeed(35);
-		Message.specialBossFightEntryPhase2(boss);
+		Message.voidFightEntryPhase2(boss);
 	}
 	
 	/**
