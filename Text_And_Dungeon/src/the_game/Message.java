@@ -45,6 +45,24 @@ public class Message {
 		System.out.print("That's all you need to know to play the game." + '\n');
 		TimeUnit.SECONDS.sleep(1);
 	}
+	
+	public static void mapChoice() {
+		while(true) {
+			System.out.print("Please choose a map : (enter map number)" + '\n');
+			System.out.print('\t' + "1 : 20x20" + '\n');
+			System.out.print('\t' + "2 : 50x50" + '\n');
+			Scanner in = new Scanner(System.in);
+			int mapNumberID = in.nextInt();
+			if (mapNumberID > 0 && mapNumberID < 2 + 1) {
+				Create.setMapID(mapNumberID);
+				break;
+			}
+			else {
+				Message.incorrectEntry();
+			}
+		}
+	}
+	
 	public static void welcome2(char[][] map) {
 		System.out.print("Here's the map to help you start :" + '\n' + '\n');
 		Message.showMap(map);
@@ -57,6 +75,9 @@ public class Message {
 	 * ----------------------PREDETERMINED MESSAGES------------------------ *
 	 * -------------------------------------------------------------------- */
 	
+	public static void incorrectEntry() {
+		System.out.print("Incorrect entry, please retry." + '\n');
+	}
 	public static void notRecognized(){
 		System.out.print("Command not recognized" + '\n' + '\n');
 	}
@@ -171,6 +192,7 @@ public class Message {
 				else if (map[i][j] == 'H') { // In Light Blue
 					System.out.print(ANSI_CYAN + map[i][j] + ANSI_RESET);
 				}
+				System.out.print(" ");
 			}
 			System.out.print('\n');
 		}
@@ -242,6 +264,27 @@ public class Message {
 		System.out.print('\n');
 //		in.close();
 		return name;
+	}
+	
+	public static boolean confirmAction(String action) {
+		boolean confirm;
+		while (true) {
+			System.out.print("Please confirm following action : \"" + action + "\" [yes]/[no]" + '\n');
+			Scanner in = new Scanner(System.in);
+			String answer = in.next().toLowerCase();
+			if (answer.equals("yes")) {
+				confirm = true;
+				break;
+			}
+			else if (answer.equals("no")) {
+				confirm = false;
+				break;
+			}
+			else {
+				Message.incorrectEntry();
+			}
+		}
+		return confirm;
 	}
 	
 	

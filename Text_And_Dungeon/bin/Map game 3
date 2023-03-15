@@ -1,0 +1,62 @@
+        0---------1---------2---------3---------4---------
+        01234567890123456789012345678901234567890123456789
+
+   00   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+   |1   X||||XXX      E     X|X C   XX|||||||||||||||||||X
+   |2   X|||X   T       E    X        X||||||||||||||||||X
+   |3   X||X      B     E             XX|||||||||||||||||X
+   |4   X||X    E     E    XXX         CXXXXX||||||||||||X
+   |5   X|||XX     E       X|X               X|||||||||||X
+   |6   X|||||XXXXXXXXX    XXT    EE       ECX|||||||||||X
+   |7   X|XXXXXXX                EE         X||||||||||||X
+   |8   XX                E                  X|||||||||||X
+   |9   XXC        E              XX         X|||||||||||X
+   10   X|X                        T        X||||||||||||X
+   |1   X||X                E           C   X||||||||||||X
+   |2   X|||X  E    XX                       XXXX||||||||X
+   |3   X||||X     TX                           CXXX|||||X
+   |4   X||||X          E  C          EE           TX||||X
+   |5   X|||||X          E            C        E    X||||X
+   |6   X||||||XXX      E          E XX  E          X||||X
+   |7   X|||||||||XXXX              CXX     E   C   X||||X
+   |8   X||||XXXXXXX||X               E              X|||X
+   |9   X|XXX E C   XX|XX       E                  E  X||X
+   20   XX     E    ECX||XT     XEE                    X|X
+   |1   X|X T   XXXXXX||||XX                 X          XX
+   |2   X||XXXXXX|||||||||||X          C     X C        XX
+   |3   X|||||||||XXX||||||||X         EE     XX   E     X
+   |4   X||||||||XCTCX|||||||X                           X
+   |5   XXX|||||X E  X|||||||X  EE                    E  X
+   |6   X CX|||XE XX EXX|||||X    EE        E    T       X
+   |7   X   XXX EX||X   XX||X                            X
+   |8   X    E   X|||XE   XXC                 XXXXXXX    X
+   |9   X       X||||X         E         E      XX||XC   X
+   30   X        X||||X  EE             ECE       XXXXX  X
+   |1   XC  E     X|||X        XXT       E              CX
+   |2   X        C XXX  E     X||X               E     X|X
+   |3   X                    ECXXC                 XXXX||X
+   |4   X   TX    E                     E  CXXXXXXX||||||X
+   |5   X   X EC   E          E       EEEEXXX||||||||||||X
+   |6   X                             XXE    X|||||||||||X
+   |7   X     E        X             X||XXCCCX|||||||||||X
+   |8   X                         XXX|||||XXX||||||||||||X
+   |9   XXXX        X    T          TXXXXXXXXXXX|||||||||X
+   40   X|||XX               XXXX               XXXXX||||X
+   |1   X|||||XXC    E     E   X|XXX         E       XX||X
+   |2   X|||||||XX          X   XX||XXXX   E           X|X
+   |3   X|||||XX          TXX     XXX|||X   E  B    E  X|X
+   |4   X||XXXE   E       XX     E   X||X             X||X
+   |5   XXX CCX        E      E E E   X||XX    E       X|X
+   |6   X    E     E  XXXXX    E C E   X|||X        XXX||X
+   |7   XX E        XX|||||XX   E E    X||||XXXXXXXX|||||X
+   |8   X|XXX  CE  X|||||||||XXXXX    X||||||||||||||||||X
+   |9   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+   
+   Dimensions : 50x50
+   murs : 
+   coffres : 35
+   boss : 2
+   ennemis : 91
+   teleporteurs : 14 donc 7 teleports
+   hero : (4, 11)
+   
