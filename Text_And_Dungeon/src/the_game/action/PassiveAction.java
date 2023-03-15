@@ -17,9 +17,9 @@ public class PassiveAction {
 	 * Create the String array containing all possible actions available when not in a fight.
 	 * @param variablePActions a String array that contains all actions that are not final (like move actions and chest opening actions)
 	 * @return a String array containing all the available actions outside a fight
-	 * @see #evaluateAvailablePassiveActions(Hero, int[][], Chest[], String[]) for changing passive actions
+	 * @see #evaluateAvailableActions(Hero, int[][], Chest[], String[]) for changing passive actions
 	 */
-	public static String[] passiveActions(String[] variablePActions) {
+	public static String[] actions(String[] variablePActions) {
 		int countOtherPA = 0;
 		for (String str : variablePActions) {
 			if (str != null) {
@@ -54,7 +54,7 @@ public class PassiveAction {
 	 * Create a String array that contains all the actions that might not be available to the player depending on their surroundings
 	 * @return a String array, the content never changes
 	 */
-	public static String[] notFinalPassiveActions() {
+	public static String[] notFinalActions() {
 		String[] passiveActions = new String[8];
 		passiveActions[0] = "Move Up";
 		passiveActions[1] = "Move Down";
@@ -76,7 +76,7 @@ public class PassiveAction {
 	 * @param passiveActions a String array which contains all possibly changing passive actions
 	 * @return a String array which contains all available changing passive actions
 	 */
-	public static String[] evaluateAvailablePassiveActions(Hero hero, int[][] walls, Chest[] chests, String[] passiveActions) {
+	public static String[] evaluateAvailableActions(Hero hero, int[][] walls, Chest[] chests, String[] passiveActions) {
 		String[] newPActions = passiveActions;
 		String[] elemNearby = hero.verifySuroundings(walls, chests);
 		// Verify if there is wall
@@ -135,7 +135,7 @@ public class PassiveAction {
 	 * @param bosses a Boss array containing all hostile bosses entities that can be attacked by the hero. <em>Include known and hidden bosses.</em> <strong>Used here for the "Show Map" action only.</strong>
 	 * @throws InterruptedException
 	 */
-	public static void executePassiveCommand(String[] command, Hero hero, int[][] walls, Chest[] chests, Enemy[] enemies, Boss[] bosses) throws InterruptedException {
+	public static void executeCommand(String[] command, Hero hero, int[][] walls, Chest[] chests, Enemy[] enemies, Boss[] bosses) throws InterruptedException {
 		
 		if (command[0].equals("inventory")) {
 			Message.showInventory(hero);
@@ -149,19 +149,19 @@ public class PassiveAction {
 		
 		else if (command[0].equals("move")) {
 			if (command.length > 1) {
-				if (command[1].equals("up") && UtilsAction.isInStringArray(evaluateAvailablePassiveActions(hero, walls, chests, notFinalPassiveActions()), "Move Up") == true) {
+				if (command[1].equals("up") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Move Up") == true) {
 					hero.move('z');
 					hero.setSpecialActionCount(0);
 				}
-				else if (command[1].equals("down") && UtilsAction.isInStringArray(evaluateAvailablePassiveActions(hero, walls, chests, notFinalPassiveActions()), "Move Down") == true) {
+				else if (command[1].equals("down") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Move Down") == true) {
 					hero.move('s');
 					hero.setSpecialActionCount(0);
 				}
-				else if (command[1].equals("right") && UtilsAction.isInStringArray(evaluateAvailablePassiveActions(hero, walls, chests, notFinalPassiveActions()), "Move Right") == true) {
+				else if (command[1].equals("right") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Move Right") == true) {
 					hero.move('d');
 					hero.setSpecialActionCount(0);
 				}
-				else if (command[1].equals("left") && UtilsAction.isInStringArray(evaluateAvailablePassiveActions(hero, walls, chests, notFinalPassiveActions()), "Move Left") == true) {
+				else if (command[1].equals("left") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Move Left") == true) {
 					hero.move('q');
 					hero.setSpecialActionCount(0);
 				}
@@ -177,19 +177,19 @@ public class PassiveAction {
 		
 		else if (command[0].equals("open")) {
 			if (command.length > 1) {
-				if (command[1].equals("top") && UtilsAction.isInStringArray(evaluateAvailablePassiveActions(hero, walls, chests, notFinalPassiveActions()), "Open Top Chest") == true) {
+				if (command[1].equals("top") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Open Top Chest") == true) {
 					hero.openChest('z', chests);
 					hero.setSpecialActionCount(0);
 				}
-				else if (command[1].equals("bottom") && UtilsAction.isInStringArray(evaluateAvailablePassiveActions(hero, walls, chests, notFinalPassiveActions()), "Open Bottom Chest") == true) {
+				else if (command[1].equals("bottom") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Open Bottom Chest") == true) {
 					hero.openChest('s', chests);
 					hero.setSpecialActionCount(0);
 				}
-				else if (command[1].equals("right") && UtilsAction.isInStringArray(evaluateAvailablePassiveActions(hero, walls, chests, notFinalPassiveActions()), "Open Right Chest") == true) {
+				else if (command[1].equals("right") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Open Right Chest") == true) {
 					hero.openChest('d', chests);
 					hero.setSpecialActionCount(0);
 				}
-				else if (command[1].equals("left") && UtilsAction.isInStringArray(evaluateAvailablePassiveActions(hero, walls, chests, notFinalPassiveActions()), "Open Left Chest") == true) {
+				else if (command[1].equals("left") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Open Left Chest") == true) {
 					hero.openChest('q', chests);
 					hero.setSpecialActionCount(0);
 				}

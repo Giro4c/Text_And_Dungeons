@@ -329,12 +329,12 @@ public class Message {
 		System.out.print(boss.getName() + ", " + boss.getTitle() + " watches." + '\n' + '\n');
 	}
 	
-	public static void specialBossFightEntryPhase1(Hero hero, Boss boss) {
+	public static void voidFightEntryPhase1(Hero hero, Boss boss) {
 		System.out.print(hero.getFullName() + " faces " + boss.getFullName() + "." + '\n');
 		System.out.print("The last Battle begins !" + '\n' + '\n');
 	}
 	
-	public static void specialBossFightEntryPhase2(Boss boss) throws InterruptedException {
+	public static void voidFightEntryPhase2(Boss boss) throws InterruptedException {
 		System.out.print("Or is it really ? ");
 		TimeUnit.SECONDS.sleep(3);
 		for (int i = 0; i < 3; ++i) {

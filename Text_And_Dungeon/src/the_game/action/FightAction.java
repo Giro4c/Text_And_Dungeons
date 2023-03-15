@@ -18,7 +18,7 @@ public class FightAction {
 	 * @param enemiesNames the names of all the enemies right next to the hero
 	 * @return a String array with all available fight actions
 	 */
-	public static String[] fightActions(String[] enemiesNames) {
+	public static String[] actions(String[] enemiesNames) {
 		int countEnemies = 0;
 		for (String enemyName : enemiesNames) {
 			if (enemyName != null) {
@@ -58,7 +58,7 @@ public class FightAction {
 	 * @param bosses a Boss array containing all hostile bosses entities that can be attacked by the hero. <em>Include known and hidden bosses.</em>
 	 * @return Whether or not it still is the hero's turn or not
 	 */
-	public static boolean executeFightCommand(String[] command, Hero hero, int[][] walls, Chest[] chests, Enemy[] enemies, Boss[] bosses) {
+	public static boolean executeCommand(String[] command, Hero hero, int[][] walls, Chest[] chests, Enemy[] enemies, Boss[] bosses) {
 		
 		if (command[0].equals("inventory")) {
 			Message.showInventory(hero);

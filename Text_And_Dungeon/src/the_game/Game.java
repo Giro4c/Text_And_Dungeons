@@ -34,10 +34,10 @@ public class Game {
 		
 		while (true) {
 			if (inFight == false) {
-				Message.showActions(PassiveAction.passiveActions(PassiveAction.evaluateAvailablePassiveActions(hero, walls, chests, PassiveAction.notFinalPassiveActions())), 2, 7);
+				Message.showActions(PassiveAction.actions(PassiveAction.evaluateAvailableActions(hero, walls, chests, PassiveAction.notFinalActions())), 2, 7);
 				System.out.print("What will you do ?" + '\n');
 				String[] command = Message.registerCommand(4);
-				PassiveAction.executePassiveCommand(command, hero, walls, chests, enemies, bosses);
+				PassiveAction.executeCommand(command, hero, walls, chests, enemies, bosses);
 				SpecialAction.checkHeroLocation(hero, bosses);
 				if (hero.isEnemyAround(enemies, bosses) == true) {
 					inFight = true;
@@ -45,8 +45,8 @@ public class Game {
 				}
 			}
 			else { // inFight == true
-				if (hero.getSpecialLocation() == 1) {
-					SpecialAction.specialBossFight(hero, bosses[1]);
+				if (Create.getMapID() == 1 && hero.getSpecialLocation() == 1) {
+					SpecialAction.bossVoidFight(hero, bosses[1]);
 					break;
 				}
 				FightAction.enemiesAttack(hero, enemies, bosses, hero.getSpeed() + 1, FightAction.maxSpeedEnemies(hero.whoIsAround(enemies, bosses), enemies, bosses));
@@ -56,10 +56,10 @@ public class Game {
 				isHeroTurn = true;
 				
 				while (isHeroTurn == true) {
-					Message.showActions(FightAction.fightActions(hero.whoIsAround(enemies, bosses)), 2, 7);
+					Message.showActions(FightAction.actions(hero.whoIsAround(enemies, bosses)), 2, 7);
 					System.out.print("What will you do ?" + '\n');
 					String[] command = Message.registerCommand(3);
-					isHeroTurn = FightAction.executeFightCommand(command, hero, walls, chests, enemies, bosses);
+					isHeroTurn = FightAction.executeCommand(command, hero, walls, chests, enemies, bosses);
 				}
 				if (FightAction.isBossDown(bosses[0]) == true) {
 					break;
