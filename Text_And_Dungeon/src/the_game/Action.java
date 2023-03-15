@@ -3,7 +3,7 @@ package the_game;
 /**
  * A class which regroup all the possible actions in the game. Includes actions outside and during a fight.
  * @author Camille Girodengo
- *
+ * @deprecated Replaced by package action
  */
 public class Action {
 

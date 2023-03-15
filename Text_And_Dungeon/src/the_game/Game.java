@@ -1,4 +1,7 @@
 package the_game;
+
+import the_game.action.*;
+
 /**
  * The main class of the game. Its execution triggers the start of the game.
  * @author Camille Girodengo
@@ -29,11 +32,11 @@ public class Game {
 		
 		while (true) {
 			if (inFight == false) {
-				Message.showActions(Action.passiveActions(Action.evaluateAvailablePassiveActions(hero, walls, chests, Action.notFinalPassiveActions())), 2, 7);
+				Message.showActions(PassiveAction.passiveActions(PassiveAction.evaluateAvailablePassiveActions(hero, walls, chests, PassiveAction.notFinalPassiveActions())), 2, 7);
 				System.out.print("What will you do ?" + '\n');
 				String[] command = Message.registerCommand(4);
-				Action.executePassiveCommand(command, hero, walls, chests, enemies, bosses);
-				Action.checkHeroLocation(hero, bosses);
+				PassiveAction.executePassiveCommand(command, hero, walls, chests, enemies, bosses);
+				SpecialAction.checkHeroLocation(hero, bosses);
 				if (hero.isEnemyAround(enemies, bosses) == true) {
 					inFight = true;
 					Message.enterFight(hero);
@@ -41,22 +44,22 @@ public class Game {
 			}
 			else { // inFight == true
 				if (hero.getSpecialLocation() == 1) {
-					Action.specialBossFight(hero, bosses[1]);
+					SpecialAction.specialBossFight(hero, bosses[1]);
 					break;
 				}
-				Action.enemiesAttack(hero, enemies, bosses, hero.getSpeed() + 1, Action.maxSpeedEnemies(hero.whoIsAround(enemies, bosses), enemies, bosses));
+				FightAction.enemiesAttack(hero, enemies, bosses, hero.getSpeed() + 1, FightAction.maxSpeedEnemies(hero.whoIsAround(enemies, bosses), enemies, bosses));
 				if (hero.getHP() <= 0) {
 					break;
 				}
 				isHeroTurn = true;
 				
 				while (isHeroTurn == true) {
-					Message.showActions(Action.fightActions(hero.whoIsAround(enemies, bosses)), 2, 7);
+					Message.showActions(FightAction.fightActions(hero.whoIsAround(enemies, bosses)), 2, 7);
 					System.out.print("What will you do ?" + '\n');
 					String[] command = Message.registerCommand(3);
-					isHeroTurn = Action.executeFightCommand(command, hero, walls, chests, enemies, bosses);
+					isHeroTurn = FightAction.executeFightCommand(command, hero, walls, chests, enemies, bosses);
 				}
-				if (Action.isBossDown(bosses[0]) == true) {
+				if (FightAction.isBossDown(bosses[0]) == true) {
 					break;
 				}
 				if (hero.isEnemyAround(enemies, bosses) == false) {
@@ -64,7 +67,7 @@ public class Game {
 					Message.exitsFight(hero);
 					continue;
 				}
-				Action.enemiesAttack(hero, enemies, bosses, 0, hero.getSpeed());
+				FightAction.enemiesAttack(hero, enemies, bosses, 0, hero.getSpeed());
 				if (hero.getHP() <= 0) {
 					break;
 				}
