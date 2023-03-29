@@ -605,7 +605,7 @@ public class Hero extends LivingEntity {
 	/**
 	 * The hero uses a teleport's terminal to appear where the paired terminal is located
 	 * @param teleport the Teleport which will be interacted with.
-	 * @param numTerminal
+	 * @param numTerminal the number of the teleport terminal to use
 	 */
 	public void useTeleport(Teleport teleport, int numTerminal) {
 		if (numTerminal == 1) {

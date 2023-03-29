@@ -194,6 +194,9 @@ public class Message {
 				else if (map[i][j] == 'H') { // In Light Blue
 					System.out.print(ANSI_CYAN + map[i][j] + ANSI_RESET);
 				}
+				else if (map[i][j] == 'T') { // In Blue
+					System.out.print(ANSI_BLUE + map[i][j] + ANSI_RESET);
+				}
 				System.out.print(" ");
 			}
 			System.out.print('\n');
