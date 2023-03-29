@@ -208,6 +208,11 @@ public class Message {
 		System.out.print(hero.getFullName() + " was defeated inside the dungeon and could not conquer the dungeon..." + '\n');
 		System.out.print("GAME OVER" + '\n');
 	}
+	public static void usesTeleport(Hero hero, Teleport teleport, int newNumTerminal) {
+		System.out.print(hero.getFullName() + " uses " + teleport.getFullName() + "." + '\n');
+		System.out.print(hero.getFullName() + " is now on Terminal " + newNumTerminal + " of " + teleport.getFullName() + ". ");
+		System.out.print("New coordinates : (" + hero.getX() + ", " + hero.getY() + ")" + '\n');
+	}
 	
 	
 	/* -------------------------------------------------------------------- *

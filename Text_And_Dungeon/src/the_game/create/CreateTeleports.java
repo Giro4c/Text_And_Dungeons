@@ -4,6 +4,10 @@ import the_game.Teleport;
 
 public class CreateTeleports {
 
+	/**
+	 * Create a Teleport array which contains all the teleports of this map.
+	 * @return a Teleport array which contains all the teleports of this map
+	 */
 	public static Teleport[] placeTeleports() {
 		if (Create.getMapID() == 1) {
 			return null;

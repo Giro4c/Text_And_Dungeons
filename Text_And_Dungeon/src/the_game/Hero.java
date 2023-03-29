@@ -587,6 +587,38 @@ public class Hero extends LivingEntity {
 		}
 		
 	}
+	
+	/**
+	 * Check if there is an element at the hero's location that can be interacted with and returns what it is
+	 * @param teleports a Teleport array which contains all the teleports of the current map
+	 * @return String "Clear" if nothing is under. Otherwise, a String which indicates which entity is under the hero. 
+	 */
+	public String checkUnder(Teleport[] teleports) {
+		for (Teleport teleport : teleports) {
+			if ((teleport.getxTerminal1() == this.getX() && teleport.getyTerminal1() == this.getY()) || (teleport.getxTerminal2() == this.getX() && teleport.getyTerminal2() == this.getY())) {
+				return "Teleport";
+			}
+		}
+		return "Clear";
+	}
+	
+	/**
+	 * The hero uses a teleport's terminal to appear where the paired terminal is located
+	 * @param teleport the Teleport which will be interacted with.
+	 * @param numTerminal
+	 */
+	public void useTeleport(Teleport teleport, int numTerminal) {
+		if (numTerminal == 1) {
+			this.setX(teleport.getxTerminal2());
+			this.setY(teleport.getyTerminal2());
+			Message.usesTeleport(this, teleport, 2);
+		}
+		else if (numTerminal == 2) {
+			this.setX(teleport.getxTerminal1());
+			this.setY(teleport.getyTerminal1());
+			Message.usesTeleport(this, teleport, 1);
+		}
+	}
 
 
 }
