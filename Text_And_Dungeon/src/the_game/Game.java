@@ -24,10 +24,11 @@ public class Game {
 //		Potion[] potions = Create.createPotions();
 //		--- ------------- ----
 		Chest[] chests = CreateChests.placeChests();
+		Teleport[] teleports = CreateTeleports.placeTeleports();
 		Enemy[] enemies = CreateEnemies.spawnEnemies();
 		Boss[] bosses = CreateBosses.spawBoss();
 		
-		Message.welcome2(Create.createMap(walls, chests, enemies, bosses, hero));
+		Message.welcome2(Create.createMap(walls, chests, teleports, enemies, bosses, hero));
 		
 		boolean inFight = false;
 		boolean isHeroTurn = true;

@@ -4,6 +4,7 @@ import the_game.Boss;
 import the_game.Chest;
 import the_game.Enemy;
 import the_game.Hero;
+import the_game.Teleport;
 
 public class Create {
 
@@ -118,11 +119,14 @@ public class Create {
 	/**
 	 * Create a char array which contains the chests of the dungeon. Chests are 'C', free space depends on the char array.
 	 * @param map the char array which represent the map
-	 * @param walls an array of int arrays which contains the location of all walls of the map except the borders.
 	 * @param chests a Chest array which contains the location of all the chests of the map
 	 * @return a char array which represents the map of the dungeon with chests added
 	 */
-	private static char[] addChestsMap(char[] map, int[][] walls, Chest[] chests) {
+	private static char[] addChestsMap(char[] map, Chest[] chests) {
+		if (chests == null) {
+			return map;
+		}
+		
 		for (Chest chest : chests) {
 			map[chest.getY() * mapWidth + chest.getX()] = 'C';
 		}
@@ -130,13 +134,34 @@ public class Create {
 	}
 	
 	/**
+	 * Create a char array which contains the teleports of the dungeon. Teleports are 'T', free space depends on the char array.
+	 * @param map the char array which represent the map
+	 * @param teleports a Teleport array which contains the location of all the teleports of the map
+	 * @return a char array which represents the map of the dungeon with chests added
+	 */
+	private static char[] addTeleportsMap(char[] map, Teleport[] teleports) {
+		if (teleports == null) {
+			return map;
+		}
+		
+		for (Teleport teleport : teleports) {
+			map[teleport.getyTerminal1() * mapWidth + teleport.getxTerminal1()] = 'T';
+			map[teleport.getyTerminal2() * mapWidth + teleport.getxTerminal2()] = 'T';
+		}
+		return map;
+	}
+	
+	/**
 	 * Create a char array which contains the common enemies of the dungeon. Common enemies are 'E', free space depends on the char array.
 	 * @param map the char array which represent the map
-	 * @param walls an array of int arrays which contains the location of all walls of the map except the borders.
 	 * @param enemies a Enemy array which contains the location of all the common enemies of the map
 	 * @return a char array which represents the map of the dungeon with common enemies added
 	 */
-	private static char[] addEnemiesMap(char[] map, int[][] walls, Enemy[] enemies) {
+	private static char[] addEnemiesMap(char[] map, Enemy[] enemies) {
+		if (enemies == null) {
+			return map;
+		}
+		
 		for (Enemy enemy : enemies) {
 			if (enemy.getHP() > 0 && enemy.getY() >= 0 && enemy.getX() >= 0) { // in case an enemy has negative coordinates and should not be shown on the map
 				map[enemy.getY() * mapWidth + enemy.getX()] = 'E';
@@ -148,11 +173,14 @@ public class Create {
 	/**
 	 * Create a char array which contains the bosses of the dungeon. Bosses are 'B', free space depends on the char array.
 	 * @param map the char array which represent the map
-	 * @param walls an array of int arrays which contains the location of all walls of the map except the borders.
 	 * @param bosses a Boss array which contains the location of all the bosses of the map
 	 * @return a char array which represents the map of the dungeon with bosses added
 	 */
-	private static char[] addBossesMap(char[] map, int[][] walls, Boss[] bosses) {
+	private static char[] addBossesMap(char[] map, Boss[] bosses) {
+		if (bosses == null) {
+			return map;
+		}
+		
 		for (Boss boss : bosses) {
 			if (boss.getY() >= 0 || boss.getX() >= 0) { // in case a boss has negative coordinates and should not be shown on the map
 				map[boss.getY() * mapWidth + boss.getX()] = 'B';
@@ -164,11 +192,13 @@ public class Create {
 	/**
 	 * Create a char array which contains the hero. The hero is 'H', free space depends on the char array.
 	 * @param map the char array which represent the map
-	 * @param walls an array of int arrays which contains the location of all walls of the map except the borders.
 	 * @param hero the hero and their location on the map
 	 * @return a char array which represents the map of the dungeon with the hero added
 	 */
-	private static char[] addHeroMap(char[] map, int[][] walls, Hero hero) {
+	private static char[] addHeroMap(char[] map, Hero hero) {
+		if (hero == null) {
+			return map;
+		}
 		map[hero.getY() * mapWidth + hero.getX()] = 'H';
 		return map;
 	}
@@ -182,17 +212,19 @@ public class Create {
 	 * @param hero hero the hero and their location on the map
 	 * @return an array of char arrays which represents the complete map of the dungeon
 	 */
-	public static char[][] createMap(int[][] walls, Chest[] chests, Enemy[] enemies, Boss[] bosses, Hero hero){
+	public static char[][] createMap(int[][] walls, Chest[] chests, Teleport[] teleports, Enemy[] enemies, Boss[] bosses, Hero hero){
 		// Map with only the walls
 		char[] map = addWallsMap(walls);
 		// Add the chests
-		map = addChestsMap(map, walls, chests);
+		map = addChestsMap(map, chests);
+		// Add the chests
+		map = addTeleportsMap(map, teleports);
 		// Add the enemies
-		map = addEnemiesMap(map, walls, enemies);
+		map = addEnemiesMap(map, enemies);
 		// Add the bosses
-		map = addBossesMap(map, walls, bosses);
+		map = addBossesMap(map, bosses);
 		// Add the hero
-		map = addHeroMap(map, walls, hero);
+		map = addHeroMap(map, hero);
 		char[][] trueMap = Create.convertCharArrayToCharArrayArray(map, mapLength, mapWidth);
 		
 		return trueMap;
