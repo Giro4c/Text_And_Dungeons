@@ -255,6 +255,7 @@ public class Hero extends LivingEntity {
 	 * The inputs associated to each cardinal direction is : 'z' -> Up, 's' -> Down, 'q' -> Left, 'd' -> Right.</p>
 	 * @param chests an array of chests in which the function must find the chest to open
 	 * @see #openChest(Chest)
+	 * @deprecated No longer necessary since EntityIdentity class implementation
 	 */
 	public void openChest(char direction, Chest[] chests) {
 		int chestX = this.getX();
@@ -364,43 +365,43 @@ public class Hero extends LivingEntity {
 	
 	
 	/**
-	 * Search the names of the enemies around the hero
+	 * Search the names and indexes of the enemies around the hero
 	 * @param enemies a array of common enemies
 	 * @param bosses a array of boss enemies
-	 * @return <p>A String array of size 4. A case for each direction which contains the name of the enemy next to the hero in this direction or <code>null</code> if there is no enemy.
+	 * @return <p>A EntityIdentity array of size 4. A case for each direction which contains the name and the index of the enemy next to the hero in this direction or <code>null</code> if there is no enemy.
 	 * Association of index for each direction : 0 -> Up, 1 -> Right, 2 -> Down, 3 -> Left</p>
 	 */
-	public String[] whoIsAround(Enemy[] enemies, Boss[] bosses) {
-		String[] enemiesNames = new String[4];
-		for (Enemy enemy : enemies) { 
-			if (enemy.getHP() > 0) {
-				if (enemy.getY() == this.getY() - 1 && enemy.getX() == this.getX()) {
-					enemiesNames[0] = enemy.getName();
+	public EntityIdentity[] whoIsAround(Enemy[] enemies, Boss[] bosses) {
+		EntityIdentity[] enemiesNames = new EntityIdentity[4];
+		for (int indexEnemy = 0; indexEnemy < enemies.length; ++indexEnemy) { 
+			if (enemies[indexEnemy].getHP() > 0) {
+				if (enemies[indexEnemy].getY() == this.getY() - 1 && enemies[indexEnemy].getX() == this.getX()) {
+					enemiesNames[0] = new EntityIdentity(enemies[indexEnemy], indexEnemy);
 				}
-				else if (enemy.getY() == this.getY() + 1 && enemy.getX() == this.getX()) {
-					enemiesNames[2] = enemy.getName();
+				else if (enemies[indexEnemy].getY() == this.getY() + 1 && enemies[indexEnemy].getX() == this.getX()) {
+					enemiesNames[2] = new EntityIdentity(enemies[indexEnemy], indexEnemy);
 				}
-				else if (enemy.getX() == this.getX() - 1 && enemy.getY() == this.getY()) {
-					enemiesNames[3] = enemy.getName();
+				else if (enemies[indexEnemy].getX() == this.getX() - 1 && enemies[indexEnemy].getY() == this.getY()) {
+					enemiesNames[3] = new EntityIdentity(enemies[indexEnemy], indexEnemy);
 				}
-				else if (enemy.getX() == this.getX() + 1 && enemy.getY() == this.getY()) {
-					enemiesNames[1] = enemy.getName();
+				else if (enemies[indexEnemy].getX() == this.getX() + 1 && enemies[indexEnemy].getY() == this.getY()) {
+					enemiesNames[1] = new EntityIdentity(enemies[indexEnemy], indexEnemy);
 				}
 			}
-		}
-		for (Boss boss : bosses) {
-			if (boss.getHP() > 0) {
-				if (boss.getY() == this.getY() - 1 && boss.getX() == this.getX()) {
-					enemiesNames[0] = boss.getName();
+		} 
+		for (int indexBoss = 0; indexBoss < bosses.length; ++indexBoss) {
+			if (bosses[indexBoss].getHP() > 0) {
+				if (bosses[indexBoss].getY() == this.getY() - 1 && bosses[indexBoss].getX() == this.getX()) {
+					enemiesNames[0] = new EntityIdentity(bosses[indexBoss], indexBoss);
 				}
-				else if (boss.getY() == this.getY() + 1 && boss.getX() == this.getX()) {
-					enemiesNames[2] = boss.getName();
+				else if (bosses[indexBoss].getY() == this.getY() + 1 && bosses[indexBoss].getX() == this.getX()) {
+					enemiesNames[2] = new EntityIdentity(bosses[indexBoss], indexBoss);
 				}
-				else if (boss.getX() == this.getX() - 1 && boss.getY() == this.getY()) {
-					enemiesNames[3] = boss.getName();
+				else if (bosses[indexBoss].getX() == this.getX() - 1 && bosses[indexBoss].getY() == this.getY()) {
+					enemiesNames[3] = new EntityIdentity(bosses[indexBoss], indexBoss);
 				}
-				else if (boss.getX() == this.getX() + 1 && boss.getY() == this.getY()) {
-					enemiesNames[1] = boss.getName();
+				else if (bosses[indexBoss].getX() == this.getX() + 1 && bosses[indexBoss].getY() == this.getY()) {
+					enemiesNames[1] = new EntityIdentity(bosses[indexBoss], indexBoss);
 				}
 			}
 		}
@@ -589,45 +590,49 @@ public class Hero extends LivingEntity {
 	}
 	
 	/**
-	 * Check if there is an element at the hero's location that can be interacted with and returns what it is
+	 * Check if there is an element at the hero's location that can be interacted with and returns what it is (type and index)
 	 * @param teleports a Teleport array which contains all the teleports of the current map
-	 * @return String "Clear" if nothing is under. Otherwise, a String which indicates which entity is under the hero. 
+	 * @return EntityIdentity ("None", -1) if nothing is under. Otherwise, a EntityIdentity which indicates which entity is under the hero and its index in the array it was found in. 
 	 */
-	public String checkUnder(Teleport[] teleports) {
-		for (Teleport teleport : teleports) {
-			if ((teleport.getxTerminal1() == this.getX() && teleport.getyTerminal1() == this.getY()) || (teleport.getxTerminal2() == this.getX() && teleport.getyTerminal2() == this.getY())) {
-				return "Teleport";
+	public EntityIdentity checkUnder(Teleport[] teleports) {
+		for (int indexTeleport = 0; indexTeleport < teleports.length; ++indexTeleport) {
+			if ((teleports[indexTeleport].getxTerminal1() == this.getX() && teleports[indexTeleport].getyTerminal1() == this.getY()) || (teleports[indexTeleport].getxTerminal2() == this.getX() && teleports[indexTeleport].getyTerminal2() == this.getY())) {
+				return new EntityIdentity(teleports[indexTeleport], indexTeleport);
 			}
 		}
-		return "Clear";
+		return new EntityIdentity(new Entity(null, "None"), -1);
 	}
 	
 	/**
 	 * The hero uses a teleport's terminal to appear where the paired terminal is located
 	 * @param teleport the Teleport which will be interacted with.
-	 * @param numTerminal the number of the teleport terminal to use
 	 */
-	public void useTeleport(Teleport teleport, int numTerminal) {
-		if (numTerminal == 1) {
+	public void useTeleport(Teleport teleport) {
+		if (teleport.getxTerminal1() == this.getX() && teleport.getyTerminal1() == this.getY()) {
 			this.setX(teleport.getxTerminal2());
 			this.setY(teleport.getyTerminal2());
 			Message.usesTeleport(this, teleport, 2);
 		}
-		else if (numTerminal == 2) {
+		else if (teleport.getxTerminal2() == this.getX() && teleport.getyTerminal2() == this.getY()) {
 			this.setX(teleport.getxTerminal1());
 			this.setY(teleport.getyTerminal1());
 			Message.usesTeleport(this, teleport, 1);
 		}
 	}
 	
+	/**
+	 * Finds if a teleport terminal has the same coordinates and uses it.
+	 * @param teleports a Teleport array which contains all the teleports of the current map
+	 * @deprecated No longer necessary since EntityIdentity class implementation
+	 */
 	public void useTeleport(Teleport[] teleports) {
 		for (Teleport teleport : teleports) {
 			if (teleport.getxTerminal1() == this.getX() && teleport.getyTerminal1() == this.getY()) {
-				this.useTeleport(teleport, 1);
+				this.useTeleport(teleport);
 				break;
 			}
 			else if (teleport.getxTerminal2() == this.getX() && teleport.getyTerminal2() == this.getY()) {
-				this.useTeleport(teleport, 2);
+				this.useTeleport(teleport);
 				break;
 			}
 		}

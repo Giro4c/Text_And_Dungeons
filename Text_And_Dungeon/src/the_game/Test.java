@@ -13,10 +13,10 @@ public class Test {
 		Create.setMapID(2);
 		
 		// Changing hero's coordinates
-		// Situation : next to a teleport
+		// Situation : near a boss
 		Hero hero = CreateHero.createHero();
-		hero.setX(10);
-		hero.setY(13);
+		hero.setX(41);
+		hero.setY(43);
 		
 		// All entities
 		int[][] walls = CreateWalls.placeWalls();

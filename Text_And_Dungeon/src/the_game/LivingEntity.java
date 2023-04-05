@@ -130,87 +130,87 @@ public class LivingEntity extends Entity {
 	 * @param direction the direction to check
 	 * @param walls an array of int arrays which contains the location of all walls of the map except the borders.
 	 * @param chests a Chest array which contains the location of all the chests of the map
-	 * @return "Wall" if there is a wall, "Chest" if there is a chest and "Clear" if there is nothing.
+	 * @return ("Wall", -1) if there is a wall, ("Chest", the index in the chest array) if there is a chest and ("None", -1) if there is nothing.
 	 */
-	public String verifyDirection (char direction, int[][] walls, Chest[] chests) {
+	public EntityIdentity verifyDirection (char direction, int[][] walls, Chest[] chests) {
 		// Up
 		if (direction == 'z') {
 			if (this.y == 1 ) {
-				return "Wall";
+				return new EntityIdentity(new Entity(null, "Wall"), -1);
 			}
 			else {
 				for (int[] wall : walls) {
 					if (wall[1] == this.y - 1 && wall[0] == this.x) {
-						return "Wall";
+						return new EntityIdentity(new Entity(null, "Wall"), -1);
 					}
 				}
-				for (Chest chest : chests) {
-					if (chest.getY() == this.y - 1 && chest.getX() == this.x) {
-						return "Chest";
+				for (int indexChest = 0; indexChest < chests.length; ++indexChest) {
+					if (chests[indexChest].getY() == this.y - 1 && chests[indexChest].getX() == this.x) {
+						return new EntityIdentity(chests[indexChest], indexChest);
 					}
 				}
-				return "Clear";
+				return new EntityIdentity(new Entity(null, "None"), -1);
 			}
 		}
 		// Down
 		else if (direction == 's') {
 			if (this.y == Create.getMapLength() - 2) {
-				return "Wall";
+				return new EntityIdentity(new Entity(null, "Wall"), -1);
 			}
 			else {
 				for (int[] wall : walls) {
 					if (wall[1] == this.y + 1 && wall[0] == this.x) {
-						return "Wall";
+						return new EntityIdentity(new Entity(null, "Wall"), -1);
 					}
 				}
-				for (Chest chest : chests) {
-					if (chest.getY() == this.y + 1 && chest.getX() == this.x) {
-						return "Chest";
+				for (int indexChest = 0; indexChest < chests.length; ++indexChest) {
+					if (chests[indexChest].getY() == this.y + 1 && chests[indexChest].getX() == this.x) {
+						return new EntityIdentity(chests[indexChest], indexChest);
 					}
 				}
-				return "Clear";
+				return new EntityIdentity(new Entity(null, "None"), -1);
 			}
 		}
 		// Left
 		else if (direction == 'q') {
 			if (this.x == 1 ) {
-				return "Wall";
+				return new EntityIdentity(new Entity(null, "Wall"), -1);
 			}
 			else {
 				for (int[] wall : walls) {
 					if (wall[0] == this.x - 1 && wall[1] == this.y) {
-						return "Wall";
+						return new EntityIdentity(new Entity(null, "Wall"), -1);
 					}
 				}
-				for (Chest chest : chests) {
-					if (chest.getX() == this.x - 1 && chest.getY() == this.y) {
-						return "Chest";
+				for (int indexChest = 0; indexChest < chests.length; ++indexChest) {
+					if (chests[indexChest].getX() == this.x - 1 && chests[indexChest].getY() == this.y) {
+						return new EntityIdentity(chests[indexChest], indexChest);
 					}
 				}
-				return "Clear";
+				return new EntityIdentity(new Entity(null, "None"), -1);
 			}
 		}
 		// Right
 		else if (direction == 'd') {
 			if (this.x == Create.getMapLength() - 2) {
-				return "Wall";
+				return new EntityIdentity(new Entity(null, "Wall"), -1);
 			}
 			else {
 				for (int[] wall : walls) {
 					if (wall[0] == this.getX() + 1 && wall[1] == this.y) {
-						return "Wall";
+						return new EntityIdentity(new Entity(null, "Wall"), -1);
 					}
 				}
-				for (Chest chest : chests) {
-					if (chest.getX() == this.x + 1 && chest.getY() == this.y) {
-						return "Chest";
+				for (int indexChest = 0; indexChest < chests.length; ++indexChest) {
+					if (chests[indexChest].getX() == this.x + 1 && chests[indexChest].getY() == this.y) {
+						return new EntityIdentity(chests[indexChest], indexChest);
 					}
 				}
-				return "Clear";
+				return new EntityIdentity(new Entity(null, "None"), -1);
 			}
 		}
 		else {
-			return "Error";
+			return new EntityIdentity(null, -1);
 		}
 	}
 	
@@ -222,8 +222,8 @@ public class LivingEntity extends Entity {
 	 * @return a String array. String[0] is for the direction "up", String[1] is for the direction "right", String[2] is for the direction "down", and String[3] is for the direction "left". Each equals either "Wall", "Chest" or "Clear"
 	 * @see #verifyDirection(char, int[][], Chest[])
 	 */
-	public String[] verifySuroundings (int[][] walls, Chest[] chests) {
-		String[] surroundings = new String[4];
+	public EntityIdentity[] verifySuroundings (int[][] walls, Chest[] chests) {
+		EntityIdentity[] surroundings = new EntityIdentity[4];
 		surroundings[0] = verifyDirection('z', walls, chests);
 		surroundings[1] = verifyDirection('d', walls, chests);
 		surroundings[2] = verifyDirection('s', walls, chests);

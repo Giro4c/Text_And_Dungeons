@@ -4,6 +4,7 @@ import the_game.Boss;
 import the_game.Chest;
 import the_game.create.Create;
 import the_game.Enemy;
+import the_game.EntityIdentity;
 import the_game.Hero;
 import the_game.Message;
 import the_game.Teleport;
@@ -19,10 +20,10 @@ public class FightAction {
 	 * @param enemiesNames the names of all the enemies right next to the hero
 	 * @return a String array with all available fight actions
 	 */
-	public static String[] actions(String[] enemiesNames) {
+	public static String[] actions(EntityIdentity[] enemiesIDs) {
 		int countEnemies = 0;
-		for (String enemyName : enemiesNames) {
-			if (enemyName != null) {
+		for (EntityIdentity enemyID : enemiesIDs) {
+			if (enemyID != null) {
 				++countEnemies;
 			}
 		}
@@ -38,11 +39,11 @@ public class FightAction {
 		actions[8] = "Unequip Weapon";
 		actions[9] = "Unequip Artifact";
 		actions[10] = "Use Potion";
-		for (int i = 0, count = 1; i < enemiesNames.length; ++i) {
-			if (enemiesNames[i] != null) {
-				actions[10 + count] = "Attack " + enemiesNames[i];
+		for (int i = 0, count = 1; i < enemiesIDs.length; ++i) {
+			if (enemiesIDs[i] != null) {
+				actions[10 + count] = "Attack " + enemiesIDs[i].getEntity().getName();
 				++count;
-				actions[10 + count] = "Check " + enemiesNames[i];
+				actions[10 + count] = "Check " + enemiesIDs[i].getEntity().getName();
 				++count;
 			}
 		}
@@ -96,14 +97,14 @@ public class FightAction {
 						command[1] = command[1] + " " + command[i];
 					}
 				}
-				for (String enemyName : hero.whoIsAround(enemies, bosses)) {
-					if (enemyName != null && enemyName.toLowerCase().equals(command[1])) {
-						if (UtilsAction.findIndexEntity(enemies, enemyName) != enemies.length) {
-							hero.attack(enemies[UtilsAction.findIndexEntity(enemies, enemyName)]);
+				for (EntityIdentity enemyAround : hero.whoIsAround(enemies, bosses)) {
+					if (enemyAround != null && enemyAround.getEntity().getName().toLowerCase().equals(command[1])) {
+						if (enemyAround.getEntity().getType().equals("Opposing Warrior") || enemyAround.getEntity().getType().equals("Monster")) {
+							hero.attack(enemies[enemyAround.getIndex()]);
 							return false;
 						}
-						else if (UtilsAction.findIndexEntity(bosses, enemyName) != bosses.length) {
-							hero.attack(bosses[UtilsAction.findIndexEntity(bosses, enemyName)]);
+						else if (enemyAround.getEntity().getType().contains("Boss")) {
+							hero.attack(bosses[enemyAround.getIndex()]);
 							return false;
 						}
 						else {
@@ -126,14 +127,14 @@ public class FightAction {
 						command[1] = command[1] + " " + command[i];
 					}
 				}
-				for (String enemyName : hero.whoIsAround(enemies, bosses)) {
-					if (enemyName != null && enemyName.toLowerCase().equals(command[1])) {
-						if (UtilsAction.findIndexEntity(enemies, enemyName) != enemies.length) {
-							Message.checkEnemy(enemies[UtilsAction.findIndexEntity(enemies, enemyName)]);
+				for (EntityIdentity enemyAround : hero.whoIsAround(enemies, bosses)) {
+					if (enemyAround != null && enemyAround.getEntity().getName().toLowerCase().equals(command[1])) {
+						if (enemyAround.getEntity().getType().equals("Opposing Warrior") || enemyAround.getEntity().getType().equals("Monster")) {
+							Message.checkEnemy(enemies[enemyAround.getIndex()]);
 							break;
 						}
-						else if (UtilsAction.findIndexEntity(bosses, enemyName) != bosses.length) {
-							Message.showBoss(bosses[UtilsAction.findIndexEntity(bosses, enemyName)]);
+						else if (enemyAround.getEntity().getType().contains("Boss")) {
+							Message.showBoss(bosses[enemyAround.getIndex()]);
 							break;
 						}
 						else {
@@ -291,15 +292,15 @@ public class FightAction {
 	 * @param bosses a Boss array of all the bosses of the map
 	 * @return the maximum speed of the enemies around the hero
 	 */
-	public static int maxSpeedEnemies(String[] enemiesNames, Enemy[] enemies, Boss[] bosses) {
+	public static int maxSpeedEnemies(EntityIdentity[] enemiesIDs, Enemy[] enemies, Boss[] bosses) {
 		int maxSpeed = 0;
-		for (String enemyName : enemiesNames) {
-			if (enemyName != null) {
-				if (UtilsAction.findIndexEntity(enemies, enemyName) != enemies.length) {
-					maxSpeed = Math.max(maxSpeed, enemies[UtilsAction.findIndexEntity(enemies, enemyName)].getSpeed());
+		for (EntityIdentity enemyID : enemiesIDs) {
+			if (enemyID != null) {
+				if (enemyID.getEntity().getType().equals("Opposing Warrior") || enemyID.getEntity().getType().equals("Monster")) {
+					maxSpeed = Math.max(maxSpeed, enemies[enemyID.getIndex()].getSpeed());
 				}
-				else if (UtilsAction.findIndexEntity(bosses, enemyName) != bosses.length) {
-					maxSpeed = Math.max(maxSpeed, bosses[UtilsAction.findIndexEntity(bosses, enemyName)].getSpeed());
+				else if (enemyID.getEntity().getType().contains("Boss")) {
+					maxSpeed = Math.max(maxSpeed, bosses[enemyID.getIndex()].getSpeed());
 				}
 			}
 		}
@@ -315,13 +316,13 @@ public class FightAction {
 	 * @param maxSpeed the maximum speed for an hostile entity to have to attack
 	 */
 	public static void enemiesAttack(Hero hero, Enemy[] enemies, Boss[] bosses, int minSpeed, int maxSpeed) {
-		for (String enemyName : hero.whoIsAround(enemies, bosses)) {
-			if (enemyName != null) {
-				if (UtilsAction.findIndexEntity(enemies, enemyName) != enemies.length && enemies[UtilsAction.findIndexEntity(enemies, enemyName)].getSpeed() >= minSpeed && enemies[UtilsAction.findIndexEntity(enemies, enemyName)].getSpeed() <= maxSpeed) {
-					enemies[UtilsAction.findIndexEntity(enemies, enemyName)].attack(hero);
+		for (EntityIdentity enemyID : hero.whoIsAround(enemies, bosses)) {
+			if (enemyID != null) {
+				if ((enemyID.getEntity().getType().equals("Opposing Warrior") || enemyID.getEntity().getType().equals("Monster")) && enemies[enemyID.getIndex()].getSpeed() >= minSpeed && enemies[enemyID.getIndex()].getSpeed() <= maxSpeed) {
+					enemies[enemyID.getIndex()].attack(hero);
 				}
-				else if (UtilsAction.findIndexEntity(bosses, enemyName) != bosses.length && bosses[UtilsAction.findIndexEntity(bosses, enemyName)].getSpeed() >= minSpeed && bosses[UtilsAction.findIndexEntity(bosses, enemyName)].getSpeed() <= maxSpeed) {
-					bosses[UtilsAction.findIndexEntity(bosses, enemyName)].attack(hero);
+				else if (enemyID.getEntity().getType().contains("Boss") && bosses[enemyID.getIndex()].getSpeed() >= minSpeed && bosses[enemyID.getIndex()].getSpeed() <= maxSpeed) {
+					bosses[enemyID.getIndex()].attack(hero);
 				}
 			}
 		}

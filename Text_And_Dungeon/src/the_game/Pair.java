@@ -59,9 +59,9 @@ class Pair<U, V>
     }
  
     // Method to create an immutable instance of type Pair
-    public static <U, V> Pair <U, V> of(U a, V b)
-    {
-        // call the private constructor
-        return new Pair<>(a, b);
-    }
+//    public static <U, V> Pair <U, V> of(U a, V b)
+//    {
+//        // call the private constructor
+//        return new Pair<>(a, b);
+//    }
 }

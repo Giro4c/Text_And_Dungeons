@@ -4,6 +4,7 @@ import the_game.Boss;
 import the_game.Chest;
 import the_game.create.Create;
 import the_game.Enemy;
+import the_game.EntityIdentity;
 import the_game.Hero;
 import the_game.Message;
 import the_game.Teleport;
@@ -82,52 +83,52 @@ public class PassiveAction {
 	 */
 	public static String[] evaluateAvailableActions(Hero hero, int[][] walls, Chest[] chests, Teleport[] teleports, String[] passiveActions) {
 		String[] newPActions = passiveActions;
-		String[] elemNearby = hero.verifySuroundings(walls, chests);
-		String elemUnder = hero.checkUnder(teleports);
+		EntityIdentity[] elemNearby = hero.verifySuroundings(walls, chests);
+		EntityIdentity elemUnder = hero.checkUnder(teleports);
 		// Verify if there is wall
-		if (elemNearby[0] == "Wall") { // Up
+		if (elemNearby[0].getEntity().getType() == "Wall") { // Up
 			newPActions[0] = null;
 			newPActions[4] = null;
 		}
-		if (elemNearby[1] == "Wall") { // Right
+		if (elemNearby[1].getEntity().getType() == "Wall") { // Right
 			newPActions[2] = null;
 			newPActions[7] = null;
 		}
-		if (elemNearby[2] == "Wall") { // Down
+		if (elemNearby[2].getEntity().getType() == "Wall") { // Down
 			newPActions[1] = null;
 			newPActions[5] = null;
 		}
-		if (elemNearby[3] == "Wall") { // Left
+		if (elemNearby[3].getEntity().getType() == "Wall") { // Left
 			newPActions[3] = null;
 			newPActions[6] = null;
 		}
 		// Verify if there is Chest
-		if (elemNearby[0] != "Chest") { // Up
+		if (elemNearby[0].getEntity().getType() != "Chest") { // Up
 			newPActions[4] = null;
 		}
 		else {
 			newPActions[0] = null;
 		}
-		if (elemNearby[1] != "Chest") { // Right
+		if (elemNearby[1].getEntity().getType() != "Chest") { // Right
 			newPActions[7] = null;
 		}
 		else {
 			newPActions[2] = null;
 		}
-		if (elemNearby[2] != "Chest") { // Down
+		if (elemNearby[2].getEntity().getType() != "Chest") { // Down
 			newPActions[5] = null;
 		}
 		else {
 			newPActions[1] = null;
 		}
-		if (elemNearby[3] != "Chest") { // Left
+		if (elemNearby[3].getEntity().getType() != "Chest") { // Left
 			newPActions[6] = null;
 		}
 		else {
 			newPActions[3] = null;
 		}
 		// Verify if there is a teleport where the hero is located
-		if (elemUnder != "Teleport") {
+		if (elemUnder.getEntity().getType() != "Teleport") {
 			newPActions[8] = null;
 			newPActions[9] = null;
 		}
@@ -189,19 +190,19 @@ public class PassiveAction {
 		else if (command[0].equals("open")) {
 			if (command.length > 1) {
 				if (command[1].equals("top") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Open Top Chest") == true) {
-					hero.openChest('z', chests);
+					hero.openChest(chests[hero.verifyDirection('z', walls, chests).getIndex()]);
 					hero.setSpecialActionCount(0);
 				}
 				else if (command[1].equals("bottom") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Open Bottom Chest") == true) {
-					hero.openChest('s', chests);
+					hero.openChest(chests[hero.verifyDirection('s', walls, chests).getIndex()]);
 					hero.setSpecialActionCount(0);
 				}
 				else if (command[1].equals("right") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Open Right Chest") == true) {
-					hero.openChest('d', chests);
+					hero.openChest(chests[hero.verifyDirection('d', walls, chests).getIndex()]);
 					hero.setSpecialActionCount(0);
 				}
 				else if (command[1].equals("left") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Open Left Chest") == true) {
-					hero.openChest('q', chests);
+					hero.openChest(chests[hero.verifyDirection('q', walls, chests).getIndex()]);
 					hero.setSpecialActionCount(0);
 				}
 				else {
@@ -262,12 +263,7 @@ public class PassiveAction {
 					}
 				}
 				else if (command[1].equals("teleport") == true && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Show Teleport") == true) {
-					for (Teleport teleport : teleports) {
-						if ((teleport.getxTerminal1() == hero.getX() && teleport.getyTerminal1() == hero.getY()) || (teleport.getxTerminal2() == hero.getX() && teleport.getyTerminal2() == hero.getY())) {
-							Message.showTeleport(teleport);
-							break;
-						}
-					}
+					Message.showTeleport(teleports[hero.checkUnder(teleports).getIndex()]);
 				}
 				else {
 					Message.notRecognized();
@@ -414,7 +410,7 @@ public class PassiveAction {
 					}
 				}
 				else if (command[1].equals("teleport") == true && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Use Teleport") == true) {
-					hero.useTeleport(teleports);
+					hero.useTeleport(teleports[hero.checkUnder(teleports).getIndex()]);
 					hero.setSpecialActionCount(0);
 				}
 			}
