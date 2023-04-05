@@ -6,6 +6,7 @@ import the_game.create.Create;
 import the_game.Enemy;
 import the_game.Hero;
 import the_game.Message;
+import the_game.Teleport;
 
 public class FightAction {
 
@@ -58,7 +59,7 @@ public class FightAction {
 	 * @param bosses a Boss array containing all hostile bosses entities that can be attacked by the hero. <em>Include known and hidden bosses.</em>
 	 * @return Whether or not it still is the hero's turn or not
 	 */
-	public static boolean executeCommand(String[] command, Hero hero, int[][] walls, Chest[] chests, Enemy[] enemies, Boss[] bosses) {
+	public static boolean executeCommand(String[] command, Hero hero, int[][] walls, Chest[] chests, Teleport[] teleports, Enemy[] enemies, Boss[] bosses) {
 		
 		if (command[0].equals("inventory")) {
 			Message.showInventory(hero);
@@ -150,7 +151,7 @@ public class FightAction {
 		else if (command[0].equals("show")) {
 			if (command.length > 1) {
 				if (command[1].equals("map")) { // For map
-					Message.showMap(Create.createMap(walls, chests, enemies, bosses, hero));
+					Message.showMap(Create.createMap(walls, chests, teleports, enemies, bosses, hero));
 				}
 				else if (command[1].equals("weapon")) { // For weapons
 					if (command.length < 3) {

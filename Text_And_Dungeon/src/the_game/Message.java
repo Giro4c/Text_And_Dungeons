@@ -128,6 +128,9 @@ public class Message {
 	public static void showItem(Item item) {
 		System.out.print(item.toString() + '\n' + '\n');
 	}
+	public static void showTeleport(Teleport teleport) {
+		System.out.print(teleport.toString() + '\n' + '\n');
+	}
 	public static void showInventory(Hero hero) {
 		System.out.print(hero.getInventory().toString() + '\n' + '\n');
 	}

@@ -35,10 +35,10 @@ public class Game {
 		
 		while (true) {
 			if (inFight == false) {
-				Message.showActions(PassiveAction.actions(PassiveAction.evaluateAvailableActions(hero, walls, chests, PassiveAction.notFinalActions())), 2, 7);
+				Message.showActions(PassiveAction.actions(PassiveAction.evaluateAvailableActions(hero, walls, chests, teleports, PassiveAction.notFinalActions())), 2, 7);
 				System.out.print("What will you do ?" + '\n');
 				String[] command = Message.registerCommand(4);
-				PassiveAction.executeCommand(command, hero, walls, chests, enemies, bosses);
+				PassiveAction.executeCommand(command, hero, walls, chests, teleports, enemies, bosses);
 				SpecialAction.checkHeroLocation(hero, bosses);
 				if (hero.isEnemyAround(enemies, bosses) == true) {
 					inFight = true;
@@ -60,7 +60,7 @@ public class Game {
 					Message.showActions(FightAction.actions(hero.whoIsAround(enemies, bosses)), 2, 7);
 					System.out.print("What will you do ?" + '\n');
 					String[] command = Message.registerCommand(3);
-					isHeroTurn = FightAction.executeCommand(command, hero, walls, chests, enemies, bosses);
+					isHeroTurn = FightAction.executeCommand(command, hero, walls, chests, teleports, enemies, bosses);
 				}
 				if (FightAction.isBossDown(bosses[0]) == true) {
 					break;

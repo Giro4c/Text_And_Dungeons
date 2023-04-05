@@ -619,6 +619,19 @@ public class Hero extends LivingEntity {
 			Message.usesTeleport(this, teleport, 1);
 		}
 	}
+	
+	public void useTeleport(Teleport[] teleports) {
+		for (Teleport teleport : teleports) {
+			if (teleport.getxTerminal1() == this.getX() && teleport.getyTerminal1() == this.getY()) {
+				this.useTeleport(teleport, 1);
+				break;
+			}
+			else if (teleport.getxTerminal2() == this.getX() && teleport.getyTerminal2() == this.getY()) {
+				this.useTeleport(teleport, 2);
+				break;
+			}
+		}
+	}
 
 
 }

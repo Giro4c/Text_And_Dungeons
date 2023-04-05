@@ -6,6 +6,7 @@ import the_game.create.Create;
 import the_game.Enemy;
 import the_game.Hero;
 import the_game.Message;
+import the_game.Teleport;
 
 public class PassiveAction {
 	
@@ -55,7 +56,7 @@ public class PassiveAction {
 	 * @return a String array, the content never changes
 	 */
 	public static String[] notFinalActions() {
-		String[] passiveActions = new String[8];
+		String[] passiveActions = new String[10];
 		passiveActions[0] = "Move Up";
 		passiveActions[1] = "Move Down";
 		passiveActions[2] = "Move Right";
@@ -64,6 +65,8 @@ public class PassiveAction {
 		passiveActions[5] = "Open Bottom Chest";
 		passiveActions[6] = "Open Left Chest";
 		passiveActions[7] = "Open Right Chest";
+		passiveActions[8] = "Use Teleport";
+		passiveActions[9] = "Show Teleport";
 		
 		return passiveActions;
 	}
@@ -73,12 +76,14 @@ public class PassiveAction {
 	 * @param hero the hero whose surroundings are checked
 	 * @param walls an array of int arrays which contains the location of all walls of the map except the borders.
 	 * @param chests a Chest array, mostly used to know where all the chests are in this case
+	 * @param teleports a Teleport array, mostly used to know where all the teleports are in this case
 	 * @param passiveActions a String array which contains all possibly changing passive actions
 	 * @return a String array which contains all available changing passive actions
 	 */
-	public static String[] evaluateAvailableActions(Hero hero, int[][] walls, Chest[] chests, String[] passiveActions) {
+	public static String[] evaluateAvailableActions(Hero hero, int[][] walls, Chest[] chests, Teleport[] teleports, String[] passiveActions) {
 		String[] newPActions = passiveActions;
 		String[] elemNearby = hero.verifySuroundings(walls, chests);
+		String elemUnder = hero.checkUnder(teleports);
 		// Verify if there is wall
 		if (elemNearby[0] == "Wall") { // Up
 			newPActions[0] = null;
@@ -121,6 +126,11 @@ public class PassiveAction {
 		else {
 			newPActions[3] = null;
 		}
+		// Verify if there is a teleport where the hero is located
+		if (elemUnder != "Teleport") {
+			newPActions[8] = null;
+			newPActions[9] = null;
+		}
 		
 		return newPActions;
 	}
@@ -131,11 +141,12 @@ public class PassiveAction {
 	 * @param hero the character controlled by the player
 	 * @param walls an array of int arrays which contains the location of all walls of the map except the borders.
 	 * @param chests a Chest array containing the informations on all the chest on the map
+	 * @param teleports a Teleport array, mostly used to know where all the teleports are in this case
 	 * @param enemies a Enemy array containing all hostile living entities that can be attacked by the hero outside of bosses. <strong>Used here for the "Show Map" action only.</strong>
 	 * @param bosses a Boss array containing all hostile bosses entities that can be attacked by the hero. <em>Include known and hidden bosses.</em> <strong>Used here for the "Show Map" action only.</strong>
 	 * @throws InterruptedException
 	 */
-	public static void executeCommand(String[] command, Hero hero, int[][] walls, Chest[] chests, Enemy[] enemies, Boss[] bosses) throws InterruptedException {
+	public static void executeCommand(String[] command, Hero hero, int[][] walls, Chest[] chests, Teleport[] teleports, Enemy[] enemies, Boss[] bosses) throws InterruptedException {
 		
 		if (command[0].equals("inventory")) {
 			Message.showInventory(hero);
@@ -149,19 +160,19 @@ public class PassiveAction {
 		
 		else if (command[0].equals("move")) {
 			if (command.length > 1) {
-				if (command[1].equals("up") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Move Up") == true) {
+				if (command[1].equals("up") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Move Up") == true) {
 					hero.move('z');
 					hero.setSpecialActionCount(0);
 				}
-				else if (command[1].equals("down") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Move Down") == true) {
+				else if (command[1].equals("down") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Move Down") == true) {
 					hero.move('s');
 					hero.setSpecialActionCount(0);
 				}
-				else if (command[1].equals("right") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Move Right") == true) {
+				else if (command[1].equals("right") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Move Right") == true) {
 					hero.move('d');
 					hero.setSpecialActionCount(0);
 				}
-				else if (command[1].equals("left") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Move Left") == true) {
+				else if (command[1].equals("left") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Move Left") == true) {
 					hero.move('q');
 					hero.setSpecialActionCount(0);
 				}
@@ -177,19 +188,19 @@ public class PassiveAction {
 		
 		else if (command[0].equals("open")) {
 			if (command.length > 1) {
-				if (command[1].equals("top") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Open Top Chest") == true) {
+				if (command[1].equals("top") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Open Top Chest") == true) {
 					hero.openChest('z', chests);
 					hero.setSpecialActionCount(0);
 				}
-				else if (command[1].equals("bottom") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Open Bottom Chest") == true) {
+				else if (command[1].equals("bottom") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Open Bottom Chest") == true) {
 					hero.openChest('s', chests);
 					hero.setSpecialActionCount(0);
 				}
-				else if (command[1].equals("right") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Open Right Chest") == true) {
+				else if (command[1].equals("right") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Open Right Chest") == true) {
 					hero.openChest('d', chests);
 					hero.setSpecialActionCount(0);
 				}
-				else if (command[1].equals("left") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, notFinalActions()), "Open Left Chest") == true) {
+				else if (command[1].equals("left") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Open Left Chest") == true) {
 					hero.openChest('q', chests);
 					hero.setSpecialActionCount(0);
 				}
@@ -206,7 +217,7 @@ public class PassiveAction {
 		else if (command[0].equals("show")) {
 			if (command.length > 1) {
 				if (command[1].equals("map")) {
-					Message.showMap(Create.createMap(walls, chests, enemies, bosses, hero));
+					Message.showMap(Create.createMap(walls, chests, teleports, enemies, bosses, hero));
 				}
 				else if (command[1].equals("weapon")) { // For weapons
 					if (command.length < 3) {
@@ -247,6 +258,14 @@ public class PassiveAction {
 						}
 						else {
 							Message.notExists("Potion");
+						}
+					}
+				}
+				else if (command[1].equals("teleport") == true && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Show Teleport") == true) {
+					for (Teleport teleport : teleports) {
+						if ((teleport.getxTerminal1() == hero.getX() && teleport.getyTerminal1() == hero.getY()) || (teleport.getxTerminal2() == hero.getX() && teleport.getyTerminal2() == hero.getY())) {
+							Message.showTeleport(teleport);
+							break;
 						}
 					}
 				}
@@ -377,19 +396,31 @@ public class PassiveAction {
 			}
 		}
 		
-		else if (command[0].equals("use") && command.length > 1 && command[1].equals("potion")) {
-			if (command.length < 3) {
-				Message.notSpecified("Potion");
-			}
-			else {
-				int numPotion = Integer.parseInt(command[2]);
-				if (numPotion != 0 && numPotion <= hero.getInventory().getPotions().length && hero.getInventory().getPotions()[numPotion - 1] != null) {
-					hero.usePotion(hero.getInventory().getPotions()[numPotion - 1]);
+		else if (command[0].equals("use")) {
+			if (command.length > 1) {
+				if (command[1].equals("potion")) {
+					if (command.length < 3) {
+						Message.notSpecified("Potion");
+					}
+					else {
+						int numPotion = Integer.parseInt(command[2]);
+						if (numPotion != 0 && numPotion <= hero.getInventory().getPotions().length && hero.getInventory().getPotions()[numPotion - 1] != null) {
+							hero.usePotion(hero.getInventory().getPotions()[numPotion - 1]);
+							hero.setSpecialActionCount(0);
+						}
+						else {
+							Message.notExists("Potion");
+						}
+					}
+				}
+				else if (command[1].equals("teleport") == true && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Use Teleport") == true) {
+					hero.useTeleport(teleports);
 					hero.setSpecialActionCount(0);
 				}
-				else {
-					Message.notExists("Potion");
-				}
+			}
+			
+			else {
+				Message.notSpecified("Usable Entity");
 			}
 		}
 		
