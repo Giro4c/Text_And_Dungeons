@@ -119,6 +119,18 @@ public class LivingEntity extends Entity {
 		return super.toString() + coordinates + '\n' + stats + '\n';
 	}
 	
+	/* -------------------------------------------------------------------- *
+	 * -------------------------------EQUALS------------------------------- *
+	 * -------------------------------------------------------------------- */
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LivingEntity livingEntity = (LivingEntity) o;
+        return super.equals(o) && this.x == livingEntity.x && this.y == livingEntity.y && 
+        		this.Atk == livingEntity.Atk && this.Def == livingEntity.Def && this.HP == livingEntity.HP && this.Speed == livingEntity.Speed;
+    }
 	
 	
 	/* -------------------------------------------------------------------- *

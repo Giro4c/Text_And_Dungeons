@@ -145,4 +145,48 @@ public class Chest extends Entity{
 		return chestContent;
 	}
 	
+	/* -------------------------------------------------------------------- *
+	 * -------------------------------EQUALS------------------------------- *
+	 * -------------------------------------------------------------------- */
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Chest chest = (Chest) o;
+        boolean equals;
+        // To prevent null pointer exceptions from appearing each time the hidden artifact of this is null
+        if (this.hiddenArtifact == null) {
+        	if (chest.hiddenArtifact == null) {
+        		equals = true;
+        	}
+        	else {
+        		equals = false;
+        	}
+        }
+        else {
+        	equals = this.hiddenArtifact.equals(chest.hiddenArtifact);
+        }
+        // To prevent null pointer exceptions from appearing each time the hidden weapon of this is null
+        if (this.hiddenWeapon == null) {
+        	if (chest.hiddenWeapon != null) {
+        		equals = false;
+        	}
+        }
+        else {
+        	equals = equals && this.hiddenWeapon.equals(chest.hiddenWeapon);
+        }
+        // To prevent null pointer exceptions from appearing each time the hidden potion of this is null
+        if (this.hiddenPotion == null) {
+        	if (chest.hiddenPotion != null) {
+        		equals = false;
+        	}
+        }
+        else {
+        	equals = equals && this.hiddenPotion.equals(chest.hiddenPotion);
+        }
+        
+        return super.equals(o) && equals && this.x == chest.x && this.y == chest.y;
+    }
+	
 }

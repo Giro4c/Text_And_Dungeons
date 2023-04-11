@@ -190,6 +190,46 @@ public class Hero extends LivingEntity {
 	}
 	
 	
+	/* -------------------------------------------------------------------- *
+	 * -------------------------------EQUALS------------------------------- *
+	 * -------------------------------------------------------------------- */
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hero hero = (Hero) o;
+        boolean equals;
+        
+        // To prevent null pointer exceptions from appearing each time the current artifact of this is null
+        if (this.currentArtifact == null) {
+        	if (hero.currentArtifact == null) {
+        		equals = true;
+        	}
+        	else {
+        		equals = false;
+        	}
+        }
+        else {
+        	equals = this.currentArtifact.equals(hero.currentArtifact);
+        }
+        
+     // To prevent null pointer exceptions from appearing each time the current weapon of this is null
+        if (this.currentWeapon == null) {
+        	if (hero.currentWeapon != null) {
+        		equals = false;
+        	}
+        }
+        else {
+        	equals = equals && this.currentWeapon.equals(hero.currentWeapon);
+        }
+        
+        return super.equals(o) && this.level == hero.level && this.currentExp == hero.currentExp 
+        		&& this.inventory.equals(hero.inventory);
+        /* NextLevelExp, specialActionCount and specialLocation are not taken into consideration because 
+         * they either depend on variables that are already checked in the function or they are not considered
+         * to characterize the hero (or they will disappear in a future update. */
+    }
 	
 	
 	/* -------------------------------------------------------------------- *

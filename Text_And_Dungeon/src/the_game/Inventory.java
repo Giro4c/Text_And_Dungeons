@@ -33,20 +33,12 @@ public class Inventory {
 		return weapons;
 	}
 	
-	public void setWeapons(Weapon[] weapons) {
-		this.weapons = weapons;
-	}
-	
 	public void setWeapon(int nbElement, Weapon weapon) {
 		this.weapons[nbElement] = weapon;
 	}
 	
 	public Artifact[] getArtifacts() {
 		return artifacts;
-	}
-	
-	public void setArtifacts(Artifact[] artifacts) {
-		this.artifacts = artifacts;
 	}
 	
 	public void setArtifact(int nbElement, Artifact artifact) {
@@ -56,11 +48,7 @@ public class Inventory {
 	public Potion[] getPotions() {
 		return potions;
 	}
-	
-	public void setPotions(Potion[] potions) {
-		this.potions = potions;
-	}
-	
+
 	public void setPotion(int nbElement, Potion potion) {
 		this.potions[nbElement] = potion;
 	}
@@ -107,5 +95,31 @@ public class Inventory {
 		}
 		return "Inventory :" + '\n' + weaponsNames + artifactsNames + potionsNames;
 	}
+	
+	/* -------------------------------------------------------------------- *
+	 * -------------------------------EQUALS------------------------------- *
+	 * -------------------------------------------------------------------- */
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Inventory inventory = (Inventory) o;
+        
+        for (int indexWeapon = 0; indexWeapon < this.weapons.length; ++indexWeapon) {
+        	if (this.weapons[indexWeapon] == null && inventory.weapons[indexWeapon] == null) continue;
+        	if (this.weapons[indexWeapon].equals(inventory.weapons[indexWeapon]) == false) return false;
+        }
+        for (int indexArtifact = 0; indexArtifact < this.artifacts.length; ++indexArtifact) {
+        	if (this.artifacts[indexArtifact] == null && inventory.artifacts[indexArtifact] == null) continue;
+        	if (this.artifacts[indexArtifact].equals(inventory.artifacts[indexArtifact]) == false) return false;
+        }
+        for (int indexPotion = 0; indexPotion < this.potions.length; ++indexPotion) {
+        	if (this.potions[indexPotion] == null && inventory.potions[indexPotion] == null) continue;
+        	if (this.potions[indexPotion].equals(inventory.potions[indexPotion]) == false) return false;
+        }
+        
+        return true;
+    }
 	
 }

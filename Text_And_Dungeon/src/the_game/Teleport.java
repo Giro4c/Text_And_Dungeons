@@ -67,4 +67,17 @@ public class Teleport extends Entity {
 		return teleport;
 	}
 	
+	/* -------------------------------------------------------------------- *
+	 * -------------------------------EQUALS------------------------------- *
+	 * -------------------------------------------------------------------- */
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Teleport teleport = (Teleport) o;
+        return super.equals(o) && this.getxTerminal1() == teleport.getxTerminal1() && this.getyTerminal1() == teleport.getyTerminal1()
+        		&& this.getxTerminal2() == teleport.getxTerminal2() && this.getyTerminal2() == teleport.getyTerminal2();
+    }
+	
 }

@@ -60,4 +60,22 @@ public class Item extends Entity{
 		return super.toString() + bonus;
 	}
 	
+	
+	
+	/* -------------------------------------------------------------------- *
+	 * -------------------------------EQUALS------------------------------- *
+	 * -------------------------------------------------------------------- */
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        if (this.statBonusNames.length != item.statBonusNames.length || this.statBonusValues.length != item.statBonusValues.length) return false;
+        for (int indexStat = 0; indexStat < this.statBonusNames.length; ++indexStat) {
+        	if (this.statBonusNames[indexStat].equals(item.statBonusNames[indexStat]) == false || this.statBonusValues[indexStat] != item.statBonusValues[indexStat]) return false;
+        }
+        return super.equals(o);
+    }
+	
 }

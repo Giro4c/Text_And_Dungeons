@@ -84,4 +84,16 @@ public class Boss extends LivingEntity {
 		return name + type + coordinates + stats;
 	}
 	
+	/* -------------------------------------------------------------------- *
+	 * -------------------------------EQUALS------------------------------- *
+	 * -------------------------------------------------------------------- */
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Boss boss = (Boss) o;
+        return super.equals(o) && this.title.equals(boss.title) && this.numPhases == boss.numPhases;
+    }
+	
 }

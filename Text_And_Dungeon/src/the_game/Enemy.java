@@ -57,4 +57,16 @@ public class Enemy extends LivingEntity {
 		return super.toString() + "Exp generated : " + this.expGenerated + '\n';
  	}
 	
+	/* -------------------------------------------------------------------- *
+	 * -------------------------------EQUALS------------------------------- *
+	 * -------------------------------------------------------------------- */
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Enemy enemy = (Enemy) o;
+        return super.equals(o) && this.expGenerated == enemy.expGenerated;
+    }
+	
 }
