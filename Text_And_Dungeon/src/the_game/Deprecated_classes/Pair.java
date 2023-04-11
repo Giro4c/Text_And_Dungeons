@@ -1,13 +1,11 @@
-package the_game;
+package the_game.Deprecated_classes;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
- 
+import the_game.EntityIdentity;
+
 /**
  * Class that represents a pair of value from two types U and V
  * @author Camille (HorsCo)
+ * @deprecated See class {@link EntityIdentity}
  *
  * @param <U> the type of the first field of the pair
  * @param <V> the type of the second field of the pair
