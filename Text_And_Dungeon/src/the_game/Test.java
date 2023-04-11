@@ -169,8 +169,10 @@ public class Test {
 				System.out.println(Message.ANSI_BLUE + "Test for Hero" + Message.ANSI_RESET);
 				
 				Hero hero1 = new Hero("Charles");
+				Hero hero2 = new Hero("Charles");
 				LivingEntity liveE1 = new LivingEntity("Charles", "Hero");
 				
+				oracleVersusResult(true, hero1.equals(hero2));
 				oracleVersusResult(false, hero1.equals(liveE1));
 				
 					// Test for Teleport
