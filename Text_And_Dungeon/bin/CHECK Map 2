@@ -9,3 +9,35 @@ Teleporteurs : 			CHECK
 Special Location :
 Hidden Boss Fight :
 Special Action :
+
+Others :
+
+- Adapter les checkSurroundings fonctions et autres au comportement 
+	similaire pour directement récupérer l'index de l'entité en meme temps que son
+	nom et type
+	(Optimisation de code pour éviter de perdre du temps à refaire le check des 
+	conditions pour effectuer une action : gain de temps sur des grands arrays)
+CHECK
+
+- Faire les override de equals() pour chaque classe qui peut etre instanciée. Sert surtout pour les item mais pourra servir plus tard.
+	Classes concernées :
+		* Inventory
+		* Entity
+			* Item
+			* Teleport
+			* Chest
+			* LivingEntity
+				* Boss
+				* Enemy
+				* Hero
+CHECK
+
+- Créer la classe Event qui regroupe tous les événements possible, leur identificateur en fonction de le map, 
+	les variables utilisées pour leur suivi.
+	Remplace specialLocation et specialActionCount se trouvant dans Hero
+
+- Créer les Classe dérivées de Weapon : Lance, Bow, Sword, etc...
+	Pour faciliter instanciation des armes
+
+- Modifier constructeur classe Potion pour inclure array {Hp} par défaut
+
