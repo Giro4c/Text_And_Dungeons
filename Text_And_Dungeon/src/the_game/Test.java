@@ -28,10 +28,13 @@ public class Test {
 	private static void testGame() throws InterruptedException {
 		
 		// Map to test
-		Create.setMapID(1);
+		Create.setMapID(2);
 		
 		// Changing hero's coordinates
+		// On a teleport for event 2
 		Hero hero = CreateHero.createHero();
+		hero.setX(11);
+		hero.setY(24);
 		
 		// All entities
 		int[][] walls = CreateWalls.placeWalls();
@@ -94,7 +97,7 @@ public class Test {
 			
 			}
 			Event.verifyIfEvent(hero);
-			Event.triggerEvents(hero, bosses);
+			Event.triggerEvents(hero, bosses, teleports);
 			
 		}
 		

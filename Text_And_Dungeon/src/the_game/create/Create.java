@@ -109,8 +109,9 @@ public class Create {
 		
 		// For Other Walls
 		for (int[] wall : walls ) {
-			map[wall[1] * mapWidth + wall[0]] = 'X';
-			
+			if (wall[0] >= 0 && wall[1] >= 0) {
+				map[wall[1] * mapWidth + wall[0]] = 'X';
+			}
 		}
 
 		return map;
@@ -128,7 +129,9 @@ public class Create {
 		}
 		
 		for (Chest chest : chests) {
-			map[chest.getY() * mapWidth + chest.getX()] = 'C';
+			if (chest.getX() >= 0 && chest.getY() >= 0) {
+				map[chest.getY() * mapWidth + chest.getX()] = 'C';
+			}
 		}
 		return map;
 	}
@@ -145,8 +148,12 @@ public class Create {
 		}
 		
 		for (Teleport teleport : teleports) {
-			map[teleport.getyTerminal1() * mapWidth + teleport.getxTerminal1()] = 'T';
-			map[teleport.getyTerminal2() * mapWidth + teleport.getxTerminal2()] = 'T';
+			if (teleport.getxTerminal1() >= 0 && teleport.getyTerminal1() >= 0) {
+				map[teleport.getyTerminal1() * mapWidth + teleport.getxTerminal1()] = 'T';
+			}
+			if (teleport.getxTerminal2() >= 0 && teleport.getyTerminal2() >= 0) {
+				map[teleport.getyTerminal2() * mapWidth + teleport.getxTerminal2()] = 'T';
+			}
 		}
 		return map;
 	}

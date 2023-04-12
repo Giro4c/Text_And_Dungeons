@@ -89,11 +89,13 @@ public class Event {
 			}
 		}
 		else if (Create.getMapID() == 2) {
-			
+			if (currentEvents.indexOf(new Event(2)) == -1 && hero.getX()==4 && hero.getY()==21) {
+				currentEvents.add(new Event(2));
+			}
 		}
 	}
 	
-	public static void triggerEvents(Hero hero, Boss[] bosses) {
+	public static void triggerEvents(Hero hero, Boss[] bosses, Teleport[] teleports, int[] walls, Chest[] chests) {
 		if (Create.getMapID() == 1) {
 			for (Event event : currentEvents) {
 				if (event.alreadyTriggered == false) {
@@ -103,18 +105,20 @@ public class Event {
 						bosses[1].setX(16);
 						bosses[1].setY(1);
 					}
+					event.alreadyTriggered = true;
 				}
 			}
 		}
-//		else if (Create.getMapID() == 2) {
-//			for (Event event : currentEvents) {
-//				if (event.alreadyTriggered == false) {
-//					if (event.id == 1) {
-//						
-//					}
-//				}
-//			}
-//		}
+		else if (Create.getMapID() == 2) {
+			for (Event event : currentEvents) {
+				if (event.alreadyTriggered == false) {
+					if (event.id == 2) {
+						teleports[5].setxTerminal1(-1);
+						teleports[5].setyTerminal1(-1);
+					}
+				}
+			}
+		}
 	}
 	
 	@Override
