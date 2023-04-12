@@ -5,6 +5,7 @@ import the_game.Chest;
 import the_game.create.Create;
 import the_game.Enemy;
 import the_game.EntityIdentity;
+import the_game.Event;
 import the_game.Hero;
 import the_game.Message;
 import the_game.Teleport;
@@ -163,19 +164,19 @@ public class PassiveAction {
 			if (command.length > 1) {
 				if (command[1].equals("up") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Move Up") == true) {
 					hero.move('z');
-					hero.setSpecialActionCount(0);
+					Event.setVoidAttackCount(0);
 				}
 				else if (command[1].equals("down") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Move Down") == true) {
 					hero.move('s');
-					hero.setSpecialActionCount(0);
+					Event.setVoidAttackCount(0);
 				}
 				else if (command[1].equals("right") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Move Right") == true) {
 					hero.move('d');
-					hero.setSpecialActionCount(0);
+					Event.setVoidAttackCount(0);
 				}
 				else if (command[1].equals("left") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Move Left") == true) {
 					hero.move('q');
-					hero.setSpecialActionCount(0);
+					Event.setVoidAttackCount(0);
 				}
 				else {
 					Message.notRecognized();
@@ -191,19 +192,19 @@ public class PassiveAction {
 			if (command.length > 1) {
 				if (command[1].equals("top") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Open Top Chest") == true) {
 					hero.openChest(chests[hero.verifyDirection('z', walls, chests).getIndex()]);
-					hero.setSpecialActionCount(0);
+					Event.setVoidAttackCount(0);
 				}
 				else if (command[1].equals("bottom") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Open Bottom Chest") == true) {
 					hero.openChest(chests[hero.verifyDirection('s', walls, chests).getIndex()]);
-					hero.setSpecialActionCount(0);
+					Event.setVoidAttackCount(0);
 				}
 				else if (command[1].equals("right") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Open Right Chest") == true) {
 					hero.openChest(chests[hero.verifyDirection('d', walls, chests).getIndex()]);
-					hero.setSpecialActionCount(0);
+					Event.setVoidAttackCount(0);
 				}
 				else if (command[1].equals("left") && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Open Left Chest") == true) {
 					hero.openChest(chests[hero.verifyDirection('q', walls, chests).getIndex()]);
-					hero.setSpecialActionCount(0);
+					Event.setVoidAttackCount(0);
 				}
 				else {
 					Message.notRecognized();
@@ -285,7 +286,7 @@ public class PassiveAction {
 						int numWeapon = Integer.parseInt(command[2]);
 						if (numWeapon != 0 && numWeapon <= hero.getInventory().getWeapons().length && hero.getInventory().getWeapons()[numWeapon - 1] != null) {
 							hero.throwWeapon(numWeapon - 1);
-							hero.setSpecialActionCount(0);
+							Event.setVoidAttackCount(0);
 						}
 						else {
 							Message.notExists("Weapon");
@@ -300,7 +301,7 @@ public class PassiveAction {
 						int numArtifact = Integer.parseInt(command[2]);
 						if (numArtifact != 0 && numArtifact <= hero.getInventory().getArtifacts().length && hero.getInventory().getArtifacts()[numArtifact - 1] != null) {
 							hero.throwArtifact(numArtifact - 1);
-							hero.setSpecialActionCount(0);
+							Event.setVoidAttackCount(0);
 						}
 						else {
 							Message.notExists("Artifact");
@@ -315,7 +316,7 @@ public class PassiveAction {
 						int numPotion = Integer.parseInt(command[2]);
 						if (numPotion != 0 && numPotion <= hero.getInventory().getPotions().length && hero.getInventory().getPotions()[numPotion - 1] != null) {
 							hero.throwPotion(numPotion - 1);
-							hero.setSpecialActionCount(0);
+							Event.setVoidAttackCount(0);
 						}
 						else {
 							Message.notExists("Potion");
@@ -342,7 +343,7 @@ public class PassiveAction {
 						int numWeapon = Integer.parseInt(command[2]);
 						if (numWeapon != 0 && numWeapon <= hero.getInventory().getWeapons().length && hero.getInventory().getWeapons()[numWeapon - 1] != null) {
 							hero.equipWeapon(hero.getInventory().getWeapons()[numWeapon - 1]);
-							hero.setSpecialActionCount(0);
+							Event.setVoidAttackCount(0);
 						}
 						else {
 							Message.notExists("Weapon");
@@ -357,7 +358,7 @@ public class PassiveAction {
 						int numArtifact = Integer.parseInt(command[2]);
 						if (numArtifact != 0 && numArtifact <= hero.getInventory().getArtifacts().length && hero.getInventory().getArtifacts()[numArtifact - 1] != null) {
 							hero.equipArtifact(hero.getInventory().getArtifacts()[numArtifact - 1]);
-							hero.setSpecialActionCount(0);
+							Event.setVoidAttackCount(0);
 						}
 						else {
 							Message.notExists("Artifact");
@@ -377,11 +378,11 @@ public class PassiveAction {
 			if (command.length > 1) {
 				if (command[1].equals("weapon")) { // For weapons
 					hero.unEquipWeapon();
-					hero.setSpecialActionCount(0);
+					Event.setVoidAttackCount(0);
 				}
 				else if (command[1].equals("artifact")) { // For artifacts
 					hero.unEquipArtifact();
-					hero.setSpecialActionCount(0);
+					Event.setVoidAttackCount(0);
 				}
 				else {
 					Message.notRecognized();
@@ -402,7 +403,7 @@ public class PassiveAction {
 						int numPotion = Integer.parseInt(command[2]);
 						if (numPotion != 0 && numPotion <= hero.getInventory().getPotions().length && hero.getInventory().getPotions()[numPotion - 1] != null) {
 							hero.usePotion(hero.getInventory().getPotions()[numPotion - 1]);
-							hero.setSpecialActionCount(0);
+							Event.setVoidAttackCount(0);
 						}
 						else {
 							Message.notExists("Potion");
@@ -411,7 +412,7 @@ public class PassiveAction {
 				}
 				else if (command[1].equals("teleport") == true && UtilsAction.isInStringArray(evaluateAvailableActions(hero, walls, chests, teleports, notFinalActions()), "Use Teleport") == true) {
 					hero.useTeleport(teleports[hero.checkUnder(teleports).getIndex()]);
-					hero.setSpecialActionCount(0);
+					Event.setVoidAttackCount(0);
 				}
 			}
 			
@@ -422,8 +423,7 @@ public class PassiveAction {
 		
 		
 		else if (command[0].equals("attack") && hero.getX() == 1 && hero.getY() == 15) {
-			hero.setSpecialActionCount(hero.getSpecialActionCount() + 1);
-			Message.specialAttack(hero);
+			Event.setVoidAttackCount(Event.getVoidAttackCount() + 1);
 		}
 		
 		

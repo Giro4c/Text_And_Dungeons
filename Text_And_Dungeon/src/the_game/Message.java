@@ -305,20 +305,20 @@ public class Message {
 	 * ---------------------------SPECIAL MESSAGES------------------------- *
 	 * -------------------------------------------------------------------- */
 
-	public static void specialAttack(Hero hero) throws InterruptedException {
-		if (hero.getSpecialActionCount() < 3) {
+	public static void voidAttack(Hero hero) throws InterruptedException {
+		if (Event.getVoidAttackCount() < 3) {
 			System.out.print(hero.getFullName() + " attacks nothing ?" + '\n' + '\n');
 		}
-		else if (hero.getSpecialActionCount() == 3) {
+		else if (Event.getVoidAttackCount() == 3) {
 			System.out.print(hero.getFullName() + " attacks Nothing." + '\n' + '\n');
 		}
-		else if (hero.getSpecialActionCount() == 4) {
+		else if (Event.getVoidAttackCount() == 4) {
 			System.out.print(hero.getFullName() + " attacks the Nothing." + '\n' + '\n');
 		}
-		else if (hero.getSpecialActionCount() == 5) {
+		else if (Event.getVoidAttackCount() == 5) {
 			System.out.print(hero.getFullName() + " attacks the Unknown." + '\n' + '\n');
 		}
-		else if (hero.getSpecialActionCount() == 6) {
+		else if (Event.getVoidAttackCount() == 6) {
 			System.out.print(hero.getFullName() + " attacks the void." + '\n' + '\n');
 			
 			for (int i = 0; i < 5; ++i) {

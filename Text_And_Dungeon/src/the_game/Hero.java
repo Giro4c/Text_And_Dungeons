@@ -635,9 +635,11 @@ public class Hero extends LivingEntity {
 	 * @return EntityIdentity ("None", -1) if nothing is under. Otherwise, a EntityIdentity which indicates which entity is under the hero and its index in the array it was found in. 
 	 */
 	public EntityIdentity checkUnder(Teleport[] teleports) {
-		for (int indexTeleport = 0; indexTeleport < teleports.length; ++indexTeleport) {
-			if ((teleports[indexTeleport].getxTerminal1() == this.getX() && teleports[indexTeleport].getyTerminal1() == this.getY()) || (teleports[indexTeleport].getxTerminal2() == this.getX() && teleports[indexTeleport].getyTerminal2() == this.getY())) {
-				return new EntityIdentity(teleports[indexTeleport], indexTeleport);
+		if (teleports != null) {
+			for (int indexTeleport = 0; indexTeleport < teleports.length; ++indexTeleport) {
+				if ((teleports[indexTeleport].getxTerminal1() == this.getX() && teleports[indexTeleport].getyTerminal1() == this.getY()) || (teleports[indexTeleport].getxTerminal2() == this.getX() && teleports[indexTeleport].getyTerminal2() == this.getY())) {
+					return new EntityIdentity(teleports[indexTeleport], indexTeleport);
+				}
 			}
 		}
 		return new EntityIdentity(new Entity(null, "None"), -1);

@@ -434,7 +434,7 @@ public class Action {
 		
 		else if (command[0].equals("attack") && hero.getX() == 1 && hero.getY() == 15) {
 			hero.setSpecialActionCount(hero.getSpecialActionCount() + 1);
-			Message.specialAttack(hero);
+			Message.voidAttack(hero);
 		}
 		
 		
