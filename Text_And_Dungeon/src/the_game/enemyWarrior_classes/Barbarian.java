@@ -4,8 +4,8 @@ import the_game.EnemyWarrior;
 
 public class Barbarian extends EnemyWarrior{
 
-	public Barbarian(String name, int x, int y) {
-		super(name, x, y, 80, 25, 15, 15, 65);
+	public Barbarian(String name, int x, int y, boolean visible) {
+		super(name, x, y, visible, 80, 25, 15, 15, 65);
 	}
 	
 	private static String[] names = inventNames();

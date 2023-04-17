@@ -12,16 +12,15 @@ public class CreateBosses {
 	public static Boss[] spawBoss() {
 		if (Create.getMapID() == 1) {
 			Boss[] bosses = new Boss[2];
-			bosses[0] = new Boss("Dragon Cirk", "Dungeon", "Destroyer of the Holy Land", 0, 6, 1, 300, 50, 30, 35);
-			bosses[1] = new Boss("V O I D    E T E R N Y S", "Hidden", "Incarnation of the void", 2, 500, 120, 60, 999); // Does not appear on the map unless engages in a fight
-			// Hidden at 
+			bosses[0] = new Boss("Dragon Cirk", "Dungeon", "Destroyer of the Holy Land", 1, 6, 1, true, 300, 50, 30, 35);
+			bosses[1] = new Boss("V O I D    E T E R N Y S", "Hidden", "Incarnation of the void", 2, 16, 1, false, 500, 120, 60, 999); // Does not appear on the map unless specific event is triggered
+			bosses[1].setPhaseStats(2, 300, 50, 30, 35);
 			return bosses;
 		}
 		else if (Create.getMapID() == 2) {
 			Boss[] bosses = new Boss[2];
-			bosses[0] = new Boss("Wywern Salsem", "Dungeon", "Keeper of the Secret Door", 0, 39, 43, 300, 50, 30, 35);
-			bosses[1] = new Boss("OwO", "Hidden", "Incarnation of OwO", 1, 400, 85, 50, 1); // Does not appear on the map unless engages in a fight
-			// Hidden at (10, 3)
+			bosses[0] = new Boss("Wywern Salsem", "Dungeon", "Keeper of the Secret Door", 1, 39, 43, true, 300, 50, 30, 35);
+			bosses[1] = new Boss("OwO", "Hidden", "Incarnation of OwO", 1, 10, 3, false, 400, 85, 50, 1); // Does not appear on the map unless specific event is triggered
 			return bosses;
 		}
 		else {

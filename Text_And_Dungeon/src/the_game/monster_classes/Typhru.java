@@ -4,8 +4,8 @@ import the_game.Monster;
 
 public class Typhru extends Monster {
 
-	public Typhru(int numInSpecie, int x, int y) {
-		super("Typhru " + numInSpecie, x, y, 40, 23, 15, 30, 30);
+	public Typhru(int numInSpecie, int x, int y, boolean visible) {
+		super("Typhru " + numInSpecie, x, y, visible, 40, 23, 15, 30, 30);
 	}
 	
 }

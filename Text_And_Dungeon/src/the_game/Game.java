@@ -11,22 +11,23 @@ import the_game.create.*;
  */
 public class Game {
 	
+	public static String[] lastValidCommand = null;
+	
 	public static void main(String[] args) throws InterruptedException {
 		
 		Message.welcome();
 		Message.mapChoice();
 		
+		// All entities
 		Hero hero = CreateHero.createHero();
-		int[][] walls = CreateWalls.placeWalls();
-//		--- Not necessary ----
-//		Weapon[] weapons = Create.createWeapons();
-//		Artifact[] artifacts = Create.createArtifacts();
-//		Potion[] potions = Create.createPotions();
-//		--- ------------- ----
+		Wall[] walls = CreateWalls.placeWalls();
 		Chest[] chests = CreateChests.placeChests();
 		Teleport[] teleports = CreateTeleports.placeTeleports();
 		Enemy[] enemies = CreateEnemies.spawnEnemies();
 		Boss[] bosses = CreateBosses.spawBoss();
+		
+		// Declaring EventManager
+		EventManager eventManager = new EventManager();
 		
 		Message.welcome2(Create.createMap(walls, chests, teleports, enemies, bosses, hero));
 		
@@ -34,20 +35,23 @@ public class Game {
 		boolean isHeroTurn = true;
 		
 		while (true) {
+			// Related to Passive Actions
 			if (inFight == false) {
 				Message.showActions(PassiveAction.actions(PassiveAction.evaluateAvailableActions(hero, walls, chests, teleports, PassiveAction.notFinalActions())), 2, 7);
 				System.out.print("What will you do ?" + '\n');
 				String[] command = Message.registerCommand(4);
 				PassiveAction.executeCommand(command, hero, walls, chests, teleports, enemies, bosses);
-				SpecialAction.checkHeroLocation(hero, bosses);
+				
 				if (hero.isEnemyAround(enemies, bosses) == true) {
 					inFight = true;
 					Message.enterFight(hero);
 				}
 			}
+			
+			// Related to Fight Actions
 			else { // inFight == true
-				if (Create.getMapID() == 1 && hero.getSpecialLocation() == 1) {
-					SpecialAction.hiddenBossFight(hero, bosses[1]);
+				if (hero.isBossAround(bosses) != -1) {
+					SpecialAction.bossFight(hero, bosses[hero.isBossAround(bosses)]);
 					break;
 				}
 				FightAction.enemiesAttack(hero, enemies, bosses, hero.getSpeed() + 1, FightAction.maxSpeedEnemies(hero.whoIsAround(enemies, bosses), enemies, bosses));
@@ -76,6 +80,8 @@ public class Game {
 				}
 			
 			}
+			
+			eventManager.verifyIfEventAndTrigger(hero, bosses, teleports, walls, chests, enemies);
 			
 		}
 		

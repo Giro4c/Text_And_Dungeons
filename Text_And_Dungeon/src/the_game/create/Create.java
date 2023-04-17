@@ -5,6 +5,7 @@ import the_game.Chest;
 import the_game.Enemy;
 import the_game.Hero;
 import the_game.Teleport;
+import the_game.Wall;
 
 public class Create {
 
@@ -87,10 +88,10 @@ public class Create {
 	
 	/**
 	 * Create a char array which contains the walls of the dungeon. Walls are 'X', free space is ' '.
-	 * @param walls an array of int arrays which contains the location of all walls of the map except the borders.
+	 * @param walls a Wall array which contains the location of all walls of the map except the borders.
 	 * @return a char array which represents the map of the dungeon with walls added
 	 */
-	private static char[] addWallsMap(int[][] walls){
+	private static char[] addWallsMap(Wall[] walls){
 		char[] map = new char[mapLength * mapWidth];
 		int count = 0;
 		// For Wall Borders
@@ -108,9 +109,9 @@ public class Create {
 		}
 		
 		// For Other Walls
-		for (int[] wall : walls ) {
-			if (wall[0] >= 0 && wall[1] >= 0) {
-				map[wall[1] * mapWidth + wall[0]] = 'X';
+		for (/*Wall wall : walls*/ int i = 0; i < walls.length; ++i) {
+			if (walls[i].isVisible() == true) {
+				map[walls[i].getY() * mapWidth + walls[i].getX()] = 'X';
 			}
 		}
 
@@ -129,7 +130,7 @@ public class Create {
 		}
 		
 		for (Chest chest : chests) {
-			if (chest.getX() >= 0 && chest.getY() >= 0) {
+			if (chest.isVisible() == true) {
 				map[chest.getY() * mapWidth + chest.getX()] = 'C';
 			}
 		}
@@ -148,11 +149,11 @@ public class Create {
 		}
 		
 		for (Teleport teleport : teleports) {
-			if (teleport.getxTerminal1() >= 0 && teleport.getyTerminal1() >= 0) {
-				map[teleport.getyTerminal1() * mapWidth + teleport.getxTerminal1()] = 'T';
+			if (teleport.getTerminal1().isVisible() == true) {
+				map[teleport.getTerminal1().getY() * mapWidth + teleport.getTerminal1().getX()] = 'T';
 			}
-			if (teleport.getxTerminal2() >= 0 && teleport.getyTerminal2() >= 0) {
-				map[teleport.getyTerminal2() * mapWidth + teleport.getxTerminal2()] = 'T';
+			if (teleport.getTerminal2().isVisible() == true) {
+				map[teleport.getTerminal2().getY() * mapWidth + teleport.getTerminal2().getX()] = 'T';
 			}
 		}
 		return map;
@@ -170,7 +171,7 @@ public class Create {
 		}
 		
 		for (Enemy enemy : enemies) {
-			if (enemy.getHP() > 0 && enemy.getY() >= 0 && enemy.getX() >= 0) { // in case an enemy has negative coordinates and should not be shown on the map
+			if (enemy.isVisible() == true && enemy.getHP() > 0) { // in case an enemy is already defeated and should not be on the map.
 				map[enemy.getY() * mapWidth + enemy.getX()] = 'E';
 			}
 		}
@@ -189,7 +190,7 @@ public class Create {
 		}
 		
 		for (Boss boss : bosses) {
-			if (boss.getY() >= 0 || boss.getX() >= 0) { // in case a boss has negative coordinates and should not be shown on the map
+			if (boss.isVisible()) { // in case a boss should not be shown on the map
 				map[boss.getY() * mapWidth + boss.getX()] = 'B';
 			}
 		}
@@ -206,20 +207,22 @@ public class Create {
 		if (hero == null) {
 			return map;
 		}
-		map[hero.getY() * mapWidth + hero.getX()] = 'H';
+		if (hero.isVisible() == true) {
+			map[hero.getY() * mapWidth + hero.getX()] = 'H';
+		}
 		return map;
 	}
 	
 	/**
 	 * Create an array of char arrays which represents the map with all the walls, chests, enemies, bosses and the hero.
-	 * @param walls an array of int arrays which contains the location of all walls of the map except the borders.
+	 * @param walls a Wall array which contains the location of all walls of the map except the borders.
 	 * @param chests a Chest array which contains the location of all the chests of the map
 	 * @param enemies a Enemy array which contains the location of all the common enemies of the map
 	 * @param bosses a Boss array which contains the location of all the bosses of the map
 	 * @param hero hero the hero and their location on the map
 	 * @return an array of char arrays which represents the complete map of the dungeon
 	 */
-	public static char[][] createMap(int[][] walls, Chest[] chests, Teleport[] teleports, Enemy[] enemies, Boss[] bosses, Hero hero){
+	public static char[][] createMap(Wall[] walls, Chest[] chests, Teleport[] teleports, Enemy[] enemies, Boss[] bosses, Hero hero){
 		// Map with only the walls
 		char[] map = addWallsMap(walls);
 		// Add the chests

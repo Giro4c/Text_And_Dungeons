@@ -2,68 +2,41 @@ package the_game;
 
 public class Teleport extends Entity {
 
-	public Teleport(String name) {
+	public Teleport(String name, int xTerminal1, int yTerminal1, int xTerminal2, int yTerminal2, boolean visible) {
 		super(name, "Teleport");
+		this.terminal1 = new Terminal(xTerminal1, yTerminal1, visible);
+		this.terminal2 = new Terminal(xTerminal2, yTerminal2, visible);
 	}
 
-	public Teleport(String name, int xTerminal1, int yTerminal1, int xTerminal2, int yTerminal2) {
+	public Teleport(String name, int xTerminal1, int yTerminal1, boolean visible1, int xTerminal2, int yTerminal2, boolean visible2) {
 		super(name, "Teleport");
-		this.terminal1[0] = xTerminal1;
-		this.terminal1[1] = yTerminal1;
-		this.terminal2[0] = xTerminal2;
-		this.terminal2[1] = yTerminal2;
+		this.terminal1 = new Terminal(xTerminal1, yTerminal1, visible1);
+		this.terminal2 = new Terminal(xTerminal2, yTerminal2, visible2);
 	}
 
-
-	private int[] terminal1 = {-1, -1};
-	private int[] terminal2 = {-1, -1};
+	private Terminal terminal1;
+	private Terminal terminal2;
 	
-	public int[] getTerminal1() {
+	public Terminal getTerminal1() {
 		return terminal1;
 	}
-	public void setTerminal1(int[] terminal1) {
-		if (terminal1.length == 2) {
-			this.terminal1 = terminal1;
-		}
+
+	public void setTerminal1(Terminal terminal1) {
+		this.terminal1 = terminal1;
 	}
-	public int getxTerminal1() {
-		return this.terminal1[0];
-	}
-	public void setxTerminal1(int xTerminal1) {
-		this.terminal1[0] = xTerminal1;
-	}
-	public int getyTerminal1() {
-		return this.terminal1[1];
-	}
-	public void setyTerminal1(int yTerminal1) {
-		this.terminal1[1] = yTerminal1;
-	}
-	
-	public int[] getTerminal2() {
+
+	public Terminal getTerminal2() {
 		return terminal2;
 	}
-	public void setTerminal2(int[] terminal2) {
-		if (terminal2.length == 2) {
-			this.terminal2 = terminal2;
-		}	
+
+	public void setTerminal2(Terminal terminal2) {
+		this.terminal2 = terminal2;
 	}
-	public int getxTerminal2() {
-		return terminal2[0];
-	}
-	public void setxTerminal2(int xTerminal2) {
-		this.terminal2[0] = xTerminal2;
-	}
-	public int getyTerminal2() {
-		return terminal2[1];
-	}
-	public void setyTerminal2(int yTerminal2) {
-		this.terminal2[1] = yTerminal2;
-	}
-	
+
 	@Override
 	public String toString() {
-		String teleport = super.toString() + "Coordinates Terminal 1 : " + this.getxTerminal1() + ", " + this.getyTerminal1() + '\n';
-		teleport = teleport + "Coordinates Terminal 2 : " + this.getxTerminal2() + ", " + this.getyTerminal2() + '\n';
+		String teleport = super.toString() + "Coordinates Terminal 1 : " + this.getTerminal1().getX() + ", " + this.getTerminal1().getY() + '\n';
+		teleport = teleport + "Coordinates Terminal 2 : " + this.getTerminal2().getX() + ", " + this.getTerminal2().getY() + '\n';
 		return teleport;
 	}
 	
@@ -76,8 +49,7 @@ public class Teleport extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Teleport teleport = (Teleport) o;
-        return super.equals(o) && this.getxTerminal1() == teleport.getxTerminal1() && this.getyTerminal1() == teleport.getyTerminal1()
-        		&& this.getxTerminal2() == teleport.getxTerminal2() && this.getyTerminal2() == teleport.getyTerminal2();
+        return super.equals(o) && this.getTerminal1().equals(teleport.getTerminal1()) && this.getTerminal2().equals(teleport.getTerminal2());
     }
 	
 }

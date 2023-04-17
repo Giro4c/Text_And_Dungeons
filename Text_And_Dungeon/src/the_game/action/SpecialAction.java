@@ -8,48 +8,29 @@ import the_game.create.Create;
 public class SpecialAction {
 	
 	/**
-	 * Check if the hero is at a special location and modify bosses information depending on this information. Can be altered to include an Enemy and Chest array in the parameters if needed.
-	 * @param hero the character controlled by the player
-	 * @param bosses a Boss array containing all bosses entities and their informations including location, stats, name, title, etc... <em>Include known and hidden bosses.</em>
-	 */
-	public static void checkHeroLocation(Hero hero, Boss[] bosses) {
-		if (hero.getSpecialLocation() == 1 ) {
-			bosses[1].setX(16);
-			bosses[1].setY(1);
-		}
-	}
-	
-	/**
 	 * Initialize the next phase in a special boss fight depending on the map and execute the actions associated with the new phase
 	 * @param hero the character who entered the fight
 	 * @param boss the boss to fight
-	 * @param phase the current phase of the boss fight
+	 * @param behaviorDeterminant an int used to determine if the function is used to initialize the start of a boss fight or is used to initialize the start of the next phase
 	 * @return the phase following the one in the parameters
 	 * @throws InterruptedException
 	 */
-	public static int bossFightNextPhaseInitializing(Hero hero, Boss boss, int phase) throws InterruptedException {
-		++phase;
-		if (Create.getMapID() == 1) {
-			if (phase == 1) {
-				Message.voidFightEntryPhase1(hero, boss);
-				return phase;
+	public static int bossFightPhaseInitializing(Hero hero, Boss boss, int behaviorDeterminant ) throws InterruptedException {
+		if (boss.getType().contains("Dungeon")) {
+			if (behaviorDeterminant == 1){
+				boss.setCurrentPhase(boss.getCurrentPhase() + 1);
 			}
-			else if (phase == 2) {
-				boss.setHP(300);
-				boss.setAtk(50);
-				boss.setDef(30);
-				boss.setSpeed(35);
-				Message.voidFightEntryPhase2(boss);
-				return phase;
-			}
+			Message.bossPhaseActivation(hero, boss);
+			return 0;
 		}
-		else if (Create.getMapID() == 2) {
-			return phase;
+		else if (boss.getType().contains("Hidden")) {
+			if (behaviorDeterminant == 1) {
+				boss.setCurrentPhase(boss.getCurrentPhase() + 1);
+			}
+			Message.hiddenBossPhaseActivation(hero, boss);
+			return 0;
 		}
 		return -1; // Error
-	}
-	public static int bossFightNextPhaseInitializing(Hero hero, Boss boss) throws InterruptedException {
-		return bossFightNextPhaseInitializing(hero, boss, 0);
 	}
 	
 	
@@ -59,10 +40,9 @@ public class SpecialAction {
 	 * @param boss the special boss the hero is currently facing in map 1
 	 * @throws InterruptedException
 	 */
-	public static void hiddenBossFight(Hero hero, Boss boss) throws InterruptedException {
-		// A Tester -----------------------
+	public static void bossFight(Hero hero, Boss boss) throws InterruptedException {
 		boolean isHeroTurn = false;
-		int phase = bossFightNextPhaseInitializing(hero, boss);
+		bossFightPhaseInitializing(hero, boss, 0);
 		while (true) {
 			if (boss.getSpeed() > hero.getSpeed()) {
 				boss.attack(hero);
@@ -72,17 +52,18 @@ public class SpecialAction {
 			}
 			isHeroTurn = true;
 			while (isHeroTurn == true) {
-				Message.showActions(fightActions(boss, phase), 2, 7);
+				Message.showActions(fightActions(boss), 2, 7);
 				System.out.print("What will you do ?" + '\n');
 				String[] command = Message.registerCommand(4);
-				isHeroTurn = executeFightCommand(command, hero, boss, phase);
+				isHeroTurn = executeFightCommand(command, hero, boss);
 			}
 			if (FightAction.isBossDown(boss) == true) {
-				if (boss.getNumPhases() == phase) {
+				if (boss.getCurrentPhase() == boss.getNUM_PHASES()) {
 					Message.bossDefeated(boss);
+					break;
 				}
 				else {
-					phase = bossFightNextPhaseInitializing(hero, boss, phase);
+					bossFightPhaseInitializing(hero, boss, 1);
 				}
 			}
 			if (boss.getSpeed() <= hero.getSpeed()) {
@@ -95,109 +76,15 @@ public class SpecialAction {
 		
 	}
 	
-	public static void bossVoidFight2(Hero hero, Boss boss) throws InterruptedException {
-		boolean isHeroTurn = false;
-		int phase = bossFightNextPhaseInitializing(hero, boss);
-		while (true) {
-			if (boss.getSpeed() > hero.getSpeed()) {
-				boss.attack(hero);
-				if (hero.getHP() <= 0) {
-					break;
-				}
-				isHeroTurn = true;
-				while (isHeroTurn == true) {
-					Message.showActions(fightActions(boss, phase), 2, 7);
-					System.out.print("What will you do ?" + '\n');
-					String[] command = Message.registerCommand(4);
-					isHeroTurn = executeFightCommand(command, hero, boss, phase);
-				}
-				if (FightAction.isBossDown(boss) == true) {
-					initializeVoidPhase2(boss);
-					phase = bossFightNextPhaseInitializing(hero, boss, phase);
-					break;
-				}
-			}
-			else {
-				isHeroTurn = true;
-				while (isHeroTurn == true) {
-					Message.showActions(fightActions(boss, phase), 2, 7);
-					System.out.print("What will you do ?" + '\n');
-					String[] command = Message.registerCommand(4);
-					isHeroTurn = executeFightCommand(command, hero, boss, phase);
-				}
-				if (FightAction.isBossDown(boss) == true) {
-					initializeVoidPhase2(boss);
-					phase = 2;
-					break;
-				}
-				boss.attack(hero);
-				if (hero.getHP() <= 0) {
-					break;
-				}
-			}
-		}
-		while (hero.getHP() > 0) {
-			if (boss.getSpeed() > hero.getSpeed()) {
-				boss.attack(hero);
-				if (hero.getHP() <= 0) {
-					break;
-				}
-				isHeroTurn = true;
-				while (isHeroTurn == true) {
-					Message.showActions(fightActions(boss, phase), 2, 7);
-					System.out.print("What will you do ?" + '\n');
-					String[] command = Message.registerCommand(4);
-					isHeroTurn = executeFightCommand(command, hero, boss, phase);
-				}
-				if (FightAction.isBossDown(boss) == true) {
-					break;
-				}
-			}
-			else {
-				isHeroTurn = true;
-				while (isHeroTurn == true) {
-					Message.showActions(fightActions(boss, phase), 2, 7);
-					System.out.print("What will you do ?" + '\n');
-					String[] command = Message.registerCommand(4);
-					isHeroTurn = executeFightCommand(command, hero, boss, phase);
-				}
-				if (FightAction.isBossDown(boss) == true) {
-					break;
-				}
-				boss.attack(hero);
-				if (hero.getHP() <= 0) {
-					break;
-				}
-			}
-		}
-		if (FightAction.isBossDown(boss) == true) {
-			Message.bossDefeated(boss);
-		}
-		
-	}
-	
-	/**
-	 * Changes the stats of the special boss after the initialization of the second phase of the boss fight and call the Message void associated to it.
-	 * @param boss the special boss whose stats are to change
-	 * @throws InterruptedException 
-	 */
-	public static void initializeVoidPhase2(Boss boss) throws InterruptedException {
-		boss.setHP(300);
-		boss.setAtk(50);
-		boss.setDef(30);
-		boss.setSpeed(35);
-		Message.voidFightEntryPhase2(boss);
-	}
-	
 	/**
 	 * Create a String array containing all available fight actions during the special boss fight depending on the boss type and the phase
 	 * @param boss the special boss the hero is facing
 	 * @param phase the current phase of the boss fight
 	 * @return a String array containing all available special boss fight actions
 	 */
-	public static String[] fightActions(Boss boss, int phase) {
+	public static String[] fightActions(Boss boss) {
 		String[] actions;
-		if (Create.getMapID() == 1 && phase == 1) {
+		if (Create.getMapID() == 1 && boss.getCurrentPhase() == 1) {
 			actions = new String[11];
 			actions[10] = "Invoke anti-void";
 		}
@@ -228,7 +115,7 @@ public class SpecialAction {
 	 * @return Whether or not it still is the hero's turn or not
 	 * @throws InterruptedException
 	 */
-	public static boolean executeFightCommand(String[] command, Hero hero, Boss boss, int phase) throws InterruptedException {
+	public static boolean executeFightCommand(String[] command, Hero hero, Boss boss) throws InterruptedException {
 	
 		if (command[0].equals("inventory")) {
 			Message.showInventory(hero);
@@ -395,7 +282,7 @@ public class SpecialAction {
 		}
 		
 		// Exclusive to Map 1
-		else if (Create.getMapID() == 1 && phase == 1 && command[0].equals("invoke") && command.length > 1 && command[1].equals("anti-void")) {
+		else if (Create.getMapID() == 1 && boss.getCurrentPhase() == 1 && command[0].equals("invoke") && command.length > 1 && command[1].equals("anti-void")) {
 			boss.setHP(boss.getHP() - 125);
 			hero.setHP(hero.getCurrentMaxHP());
 			Message.antiVoidIncantation(hero, boss);

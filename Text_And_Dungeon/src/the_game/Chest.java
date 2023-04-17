@@ -4,66 +4,14 @@ package the_game;
  * @author Camille Girodengo
  *
  */
-public class Chest extends Entity{
+public class Chest extends VisibleEntity{
 	
 	/* -------------------------------------------------------------------- *
 	 * ---------------------------CONSTRUCTORS----------------------------- *
 	 * -------------------------------------------------------------------- */
 	
-	public Chest(String name) {
-		super(name, "Chest");
-		this.hiddenWeapon = null;
-		this.hiddenArtifact = null;
-		this.hiddenPotion = null;
-	}
-	public Chest(String name, int x, int y) {
-		super(name, "Chest");
-		this.x = x;
-		this.y = y;
-	}
-	public Chest(String name, int x, int y, Weapon hiddenWeapon, Artifact hiddenArtifact) {
-		super(name, "Chest");
-		this.x = x;
-		this.y = y;
-		this.hiddenWeapon = hiddenWeapon;
-		this.hiddenArtifact = hiddenArtifact;
-	}
-	public Chest(String name, int x, int y, Weapon hiddenWeapon, Potion hiddenPotion) {
-		super(name, "Chest");
-		this.x = x;
-		this.y = y;
-		this.hiddenWeapon = hiddenWeapon;
-		this.hiddenPotion = hiddenPotion;
-	}
-	public Chest(String name, int x, int y, Weapon hiddenWeapon) {
-		super(name, "Chest");
-		this.x = x;
-		this.y = y;
-		this.hiddenWeapon = hiddenWeapon;
-	}
-	public Chest(String name, int x, int y, Artifact hiddenArtifact, Potion hiddenPotion) {
-		super(name, "Chest");
-		this.x = x;
-		this.y = y;
-		this.hiddenArtifact = hiddenArtifact;
-		this.hiddenPotion = hiddenPotion;
-	}
-	public Chest(String name, int x, int y, Artifact hiddenArtifact) {
-		super(name, "Chest");
-		this.x = x;
-		this.y = y;
-		this.hiddenArtifact = hiddenArtifact;
-	}
-	public Chest(String name, int x, int y, Potion hiddenPotion) {
-		super(name, "Chest");
-		this.x = x;
-		this.y = y;
-		this.hiddenPotion = hiddenPotion;
-	}
-	public Chest(String name, int x, int y, Weapon hiddenWeapon, Artifact hiddenArtifact, Potion hiddenPotion) {
-		super(name, "Chest");
-		this.x = x;
-		this.y = y;
+	public Chest(String name, int x, int y, boolean visible, Weapon hiddenWeapon, Artifact hiddenArtifact, Potion hiddenPotion) {
+		super(name, "Chest", x, y, visible);
 		this.hiddenWeapon = hiddenWeapon;
 		this.hiddenArtifact = hiddenArtifact;
 		this.hiddenPotion = hiddenPotion;
@@ -75,27 +23,9 @@ public class Chest extends Entity{
 	 * ------------------VARIABLES / GETTERS / SETTERS--------------------- *
 	 * -------------------------------------------------------------------- */
 	
-	private int x = 0;
-	private int y = 0;
-	private Weapon hiddenWeapon = null;
-	private Artifact hiddenArtifact = null;
-	private Potion hiddenPotion = null;
-	
-	public int getX() {
-		return x;
-	}
-	
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-	
-	public void setY(int y) {
-		this.y = y;
-	}
+	private Weapon hiddenWeapon;
+	private Artifact hiddenArtifact;
+	private Potion hiddenPotion;
 	
 	public Weapon getHiddenWeapon() {
 		return hiddenWeapon;
@@ -129,7 +59,7 @@ public class Chest extends Entity{
 	
 	@Override
 	public String toString() {
-		String chestContent = "Name : " + this.getName() + '\n' + "Location : x=" + this.x + " y=" + this.y + '\n';
+		String chestContent = "Name : " + this.getName() + '\n' + "Location : x=" + this.getX() + " y=" + this.getY() + '\n';
 		if (this.hiddenWeapon != null) {
 			chestContent = chestContent + '\t' + "- " + this.hiddenWeapon.getFullName() + '\n';
 		}
@@ -154,39 +84,30 @@ public class Chest extends Entity{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Chest chest = (Chest) o;
-        boolean equals;
+        boolean equals = true;
         // To prevent null pointer exceptions from appearing each time the hidden artifact of this is null
         if (this.hiddenArtifact == null) {
-        	if (chest.hiddenArtifact == null) {
-        		equals = true;
-        	}
-        	else {
-        		equals = false;
-        	}
+        	if (chest.hiddenArtifact != null) return false;
         }
         else {
         	equals = this.hiddenArtifact.equals(chest.hiddenArtifact);
         }
         // To prevent null pointer exceptions from appearing each time the hidden weapon of this is null
         if (this.hiddenWeapon == null) {
-        	if (chest.hiddenWeapon != null) {
-        		equals = false;
-        	}
+        	if (chest.hiddenWeapon != null) return false;
         }
         else {
         	equals = equals && this.hiddenWeapon.equals(chest.hiddenWeapon);
         }
         // To prevent null pointer exceptions from appearing each time the hidden potion of this is null
         if (this.hiddenPotion == null) {
-        	if (chest.hiddenPotion != null) {
-        		equals = false;
-        	}
+        	if (chest.hiddenPotion != null) return false;
         }
         else {
         	equals = equals && this.hiddenPotion.equals(chest.hiddenPotion);
         }
         
-        return super.equals(o) && equals && this.x == chest.x && this.y == chest.y;
+        return super.equals(o) && equals;
     }
 	
 }

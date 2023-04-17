@@ -107,15 +107,24 @@ public class Inventory {
         Inventory inventory = (Inventory) o;
         
         for (int indexWeapon = 0; indexWeapon < this.weapons.length; ++indexWeapon) {
-        	if (this.weapons[indexWeapon] == null && inventory.weapons[indexWeapon] == null) continue;
+        	if (this.weapons[indexWeapon] == null ) {
+        		if (inventory.weapons[indexWeapon] != null) return false;
+        		continue;
+        	}
         	if (this.weapons[indexWeapon].equals(inventory.weapons[indexWeapon]) == false) return false;
         }
         for (int indexArtifact = 0; indexArtifact < this.artifacts.length; ++indexArtifact) {
-        	if (this.artifacts[indexArtifact] == null && inventory.artifacts[indexArtifact] == null) continue;
+        	if (this.artifacts[indexArtifact] == null) {
+        		if (inventory.artifacts[indexArtifact] != null) return false;
+        		continue;
+        	}
         	if (this.artifacts[indexArtifact].equals(inventory.artifacts[indexArtifact]) == false) return false;
         }
         for (int indexPotion = 0; indexPotion < this.potions.length; ++indexPotion) {
-        	if (this.potions[indexPotion] == null && inventory.potions[indexPotion] == null) continue;
+        	if (this.potions[indexPotion] == null) {
+        		if (inventory.potions[indexPotion] != null) return false;
+        		continue;
+        	}
         	if (this.potions[indexPotion].equals(inventory.potions[indexPotion]) == false) return false;
         }
         

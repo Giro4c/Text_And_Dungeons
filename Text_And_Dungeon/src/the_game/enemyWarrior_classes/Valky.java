@@ -4,8 +4,8 @@ import the_game.EnemyWarrior;
 
 public class Valky extends EnemyWarrior{
 
-	public Valky(String name, int x, int y) {
-		super(name, x, y, 120, 40, 5, 35, 100);
+	public Valky(String name, int x, int y, boolean visible) {
+		super(name, x, y, visible, 120, 40, 5, 35, 100);
 	}
 	
 	private static String[] names = inventNames();

@@ -4,8 +4,8 @@ import the_game.EnemyWarrior;
 
 public class Defender extends EnemyWarrior{
 
-	public Defender(String name, int x, int y) {
-		super(name, x, y, 100, 20, 30, 12, 65);
+	public Defender(String name, int x, int y, boolean visible) {
+		super(name, x, y, visible, 100, 20, 30, 12, 65);
 	}
 	
 	private static String[] names = inventNames();

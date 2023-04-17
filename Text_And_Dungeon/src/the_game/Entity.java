@@ -66,7 +66,16 @@ public class Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Entity entity = (Entity) o;
-        return this.name.equals(entity.name) && this.type.equals(entity.type);
+        if (this.name == null) {
+        	if (entity.name != null) return false;
+        }
+        else if (this.name.equals(entity.name) != true) return false;
+        if (this.type == null) {
+        	if (entity.type != null) return false;
+        }
+        else if (this.type.equals(entity.type) != true) return false;
+        
+        return true;
     }
 	
 }

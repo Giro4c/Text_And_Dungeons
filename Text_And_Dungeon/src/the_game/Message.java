@@ -305,20 +305,33 @@ public class Message {
 	 * ---------------------------SPECIAL MESSAGES------------------------- *
 	 * -------------------------------------------------------------------- */
 
-	public static void voidAttack(Hero hero) throws InterruptedException {
-		if (Event.getVoidAttackCount() < 3) {
+	public static void voidAttack(Hero hero, int voidAttackCount, Event event) throws InterruptedException {
+		if (voidAttackCount < 3 && event.getIntermediaryEvents().get(0).isTriggered() == false) {
 			System.out.print(hero.getFullName() + " attacks nothing ?" + '\n' + '\n');
+			event.getIntermediaryEvents().get(0).triggerNextIntermediaryEvent(); // Trigger the (n-1) event in the intermediary event list of IE 0
+			if (event.getIntermediaryEvents().get(0).canBeTriggered()) {
+				event.triggerNextIntermediaryEvent(); // All IE of IE 0 have been triggered so IE 0 should be triggered
+			}
 		}
-		else if (Event.getVoidAttackCount() == 3) {
+		else if (voidAttackCount == 3 && event.getIntermediaryEvents().get(1).isTriggered() == false) {
 			System.out.print(hero.getFullName() + " attacks Nothing." + '\n' + '\n');
+			if (event.getIntermediaryEvents().get(1).canBeTriggered()) {
+				event.triggerNextIntermediaryEvent();
+			}
 		}
-		else if (Event.getVoidAttackCount() == 4) {
+		else if (voidAttackCount == 4 && event.getIntermediaryEvents().get(2).isTriggered() == false) {
 			System.out.print(hero.getFullName() + " attacks the Nothing." + '\n' + '\n');
+			if (event.getIntermediaryEvents().get(2).canBeTriggered()) {
+				event.triggerNextIntermediaryEvent();
+			}
 		}
-		else if (Event.getVoidAttackCount() == 5) {
+		else if (voidAttackCount == 5 && event.getIntermediaryEvents().get(3).isTriggered() == false) {
 			System.out.print(hero.getFullName() + " attacks the Unknown." + '\n' + '\n');
+			if (event.getIntermediaryEvents().get(3).canBeTriggered()) {
+				event.triggerNextIntermediaryEvent();
+			}
 		}
-		else if (Event.getVoidAttackCount() == 6) {
+		else if (voidAttackCount == 6 && event.getIntermediaryEvents().get(4).isTriggered() == false) {
 			System.out.print(hero.getFullName() + " attacks the void." + '\n' + '\n');
 			
 			for (int i = 0; i < 5; ++i) {
@@ -331,6 +344,40 @@ public class Message {
 			System.out.print('\n' + "The  V O I D  reaches out..." + '\n' + '\n');
 			
 			TimeUnit.SECONDS.sleep(2);
+			
+			if (event.getIntermediaryEvents().get(4).canBeTriggered()) {
+				event.triggerNextIntermediaryEvent();
+			}
+		}
+	}
+	
+	public static void WarningEnemiesDownCount(int sumEnemiesDown, Enemy[] enemies, Boss[] bosses, Event event) throws InterruptedException {
+		if (sumEnemiesDown == enemies.length / 4) {
+			event.triggerNextIntermediaryEvent();
+			System.out.println("The wind is starting to grow stronger.");
+		}
+		else if (sumEnemiesDown == enemies.length / 2) {
+			event.triggerNextIntermediaryEvent();
+			System.out.println("Menacing clouds are invading the sky.");
+		}
+		else if (sumEnemiesDown == enemies.length - (enemies.length / 4)) {
+			event.triggerNextIntermediaryEvent();
+			System.out.print("The surrondings are getting darker");
+			for (int numPeriod = 0; numPeriod < 3; ++numPeriod) {
+				System.out.print(".");
+				TimeUnit.SECONDS.sleep(1);
+			}
+			System.out.print('\n');
+			System.out.println("Seems like something is coming...");
+		}
+		else if (sumEnemiesDown == enemies.length) {
+			event.triggerNextIntermediaryEvent();
+			for (int numPeriod = 0; numPeriod < 10; ++numPeriod) {
+				System.out.print(".");
+				TimeUnit.MILLISECONDS.sleep(500);
+			}
+			System.out.println('\n' + bosses[0].getFullName() + " has fled !");
+			System.out.println("The true master of the place, " + bosses[1].getFullName() + " has appeared !");
 		}
 	}
 	
@@ -340,21 +387,42 @@ public class Message {
 		System.out.print(boss.getName() + ", " + boss.getTitle() + " watches." + '\n' + '\n');
 	}
 	
-	public static void voidFightEntryPhase1(Hero hero, Boss boss) {
-		System.out.print(hero.getFullName() + " faces " + boss.getFullName() + "." + '\n');
-		System.out.print("The last Battle begins !" + '\n' + '\n');
+	public static void bossPhaseActivation(Hero hero, Boss boss) {
+		if (boss.getCurrentPhase() == 1) {
+			System.out.print(hero.getFullName() + " faces " + boss.getFullName() + "." + '\n');
+			System.out.print("A magical barrier appears." + '\n');
+			System.out.print("The last Battle begins !" + '\n' + '\n');
+		}
+		else {
+			System.out.print(boss.getFullName() + " still has some energy left ! Initialisation of phase " + boss.getCurrentPhase() + ".");
+		}
 	}
 	
-	public static void voidFightEntryPhase2(Boss boss) throws InterruptedException {
-		System.out.print("Or is it really ? ");
-		TimeUnit.SECONDS.sleep(3);
-		for (int i = 0; i < 3; ++i) {
-			System.out.print(".");
-			TimeUnit.SECONDS.sleep(1);
+	public static void hiddenBossPhaseActivation(Hero hero, Boss boss) throws InterruptedException {
+		if (Create.getMapID() == 1) {
+			if (boss.getCurrentPhase() == 1) {
+				System.out.print(hero.getFullName() + " faces " + boss.getFullName() + "." + '\n');
+				System.out.print("The  -  last  -  Battle  -  begins !" + '\n' + '\n');
+			}
+			else if (boss.getCurrentPhase() == 2) {
+				System.out.print(boss.getFullName() + " is down !" + '\n');
+				System.out.print("Or is it really ? ");
+				TimeUnit.SECONDS.sleep(3);
+				for (int numPeriod = 0; numPeriod < 3; ++numPeriod) {
+					System.out.print(".");
+					TimeUnit.SECONDS.sleep(1);
+				}
+				TimeUnit.SECONDS.sleep(2);
+				System.out.print(" " + boss.getName() + " is getting up !" + '\n');
+				System.out.print(boss.getName() + " is still recovering from the assault ! Strike it down before it can get back to its full strength !" + '\n' + "Be brave Hero, this is the final push !" + '\n' + '\n');
+			}
 		}
-		TimeUnit.SECONDS.sleep(2);
-		System.out.print(" " + boss.getName() + " is getting up !" + '\n');
-		System.out.print(boss.getName() + " is still recovering from the assault ! Strike it down before it can get back to its full strength !" + '\n' + "Be brave Hero, this is the final push !" + '\n' + '\n');
+		else if (Create.getMapID() == 2) {
+			if (boss.getCurrentPhase() == 1) {
+				System.out.print("UwU " + hero.getFullName() + " faces " + boss.getFullName() + ". UwU" + '\n');
+				System.out.print("The last Battle begins ! >w<" + '\n' + '\n');
+			}
+		}
 	}
 	
 	public static void antiVoidIncantation(Hero hero, Boss boss) throws InterruptedException {

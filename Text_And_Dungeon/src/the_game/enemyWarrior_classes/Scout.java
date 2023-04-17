@@ -4,8 +4,8 @@ import the_game.EnemyWarrior;
 
 public class Scout extends EnemyWarrior {
 
-	public Scout(String name, int x, int y) {
-		super(name, x, y, 70, 33, 17, 45, 80);
+	public Scout(String name, int x, int y, boolean visible) {
+		super(name, x, y, visible, 70, 33, 17, 45, 80);
 	}
 
 	private static String[] names = inventNames();

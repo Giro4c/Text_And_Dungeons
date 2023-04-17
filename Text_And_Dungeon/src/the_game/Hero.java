@@ -10,61 +10,25 @@ public class Hero extends LivingEntity {
 	/* -------------------------------------------------------------------- *
 	 * ---------------------------CONSTRUCTORS----------------------------- *
 	 * -------------------------------------------------------------------- */
-	
-	public Hero(String name) {
-		super(name, "Hero");
-		currentMaxHP = this.getHP();
-
-	}
-	
-	public Hero(String name, int x, int y, int hP, int atk, int def, int vit) {
-		super(name, "Hero", x, y, hP, atk, def, vit);
+		
+	public Hero(String name, int x, int y, boolean visible, int hP, int atk, int def, int speed) {
+		super(name, "Hero", x, y, visible, hP, atk, def, speed);
 		currentMaxHP = hP;
 	}
 
-	public Hero(String name, int x, int y) {
-		super(name, "Hero", x, y);
+	public Hero(String name, int x, int y, boolean visible) {
+		super(name, "Hero", x, y, visible);
 		currentMaxHP = this.getHP();
-	}
-
-	public Hero(String name, int hP, int atk, int def, int vit) {
-		super(name, "Hero", hP, atk, def, vit);
-		currentMaxHP = hP;
-	}
-
-	public Hero(String name, Weapon currentWeapon, Artifact currentArtifact) {
-		super(name, "Hero");
-		currentMaxHP = this.getHP();
-		equipWeapon(currentWeapon);
-		equipArtifact(currentArtifact);
-		this.inventory.setWeapon(0, currentWeapon);
-		this.inventory.setArtifact(0, currentArtifact);
-	}
-	
-	public Hero(String name, int x, int y, Weapon currentWeapon, Artifact currentArtifact) {
-		super(name, "Hero", x, y);
-		currentMaxHP = this.getHP();
-		equipWeapon(currentWeapon);
-		equipArtifact(currentArtifact);
-		this.inventory.setWeapon(0, currentWeapon);
-		this.inventory.setArtifact(0, currentArtifact);
-	}
-
-	public Hero(String name, int x, int y, int hP, int atk, int def, int vit, Weapon currentWeapon, Artifact currentArtifact) {
-		super(name, "Hero", x, y, hP, atk, def, vit);
-		currentMaxHP = hP;
-		equipWeapon(currentWeapon);
-		equipArtifact(currentArtifact);
-		this.inventory.setWeapon(0, currentWeapon);
-		this.inventory.setArtifact(0, currentArtifact);
-	}
-
-	
-	
+	}	
 	
 	/* -------------------------------------------------------------------- *
 	 * ------------------VARIABLES / GETTERS / SETTERS--------------------- *
 	 * -------------------------------------------------------------------- */
+	
+	private static final int HP_LEVEL_UP_BONUS = 5;
+	private static final int ATK_LEVEL_UP_BONUS = 3;
+	private static final int DEF_LEVEL_UP_BONUS = 1;
+	private static final int SPD_LEVEL_UP_BONUS = 2;
 	
 	private int currentMaxHP;
 	private Weapon currentWeapon;
@@ -73,8 +37,6 @@ public class Hero extends LivingEntity {
 	private int level = 1;
 	private int currentExp = 0;
 	private double nextLevelExp = 100;
-	private int specialActionCount = 0;
-	private int specialLocation = 0;
 	
 	public Weapon getCurrentWeapon() {
 		return currentWeapon;
@@ -132,28 +94,7 @@ public class Hero extends LivingEntity {
 		this.nextLevelExp = nextLevelExp;
 	}
 
-	public int getSpecialActionCount() {
-		return specialActionCount;
-	}
 
-	/**
-	 * Particular setter which updates other variables of hero if <code>specialActionCount</code> is set to a specific value.
-	 * @param specialActionCount the new int value for <code>specialActionCount</code>
-	 */
-	public void setSpecialActionCount(int specialActionCount) {
-		this.specialActionCount = specialActionCount;
-		if (this.specialActionCount == 6) {
-			this.specialLocation = 1;
-			this.setX(17);
-			this.setY(5);
-		}
-	}
-
-	public int getSpecialLocation() {
-		return specialLocation;
-	}
-	
-	
 	
 	
 	/* -------------------------------------------------------------------- *
@@ -199,30 +140,18 @@ public class Hero extends LivingEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Hero hero = (Hero) o;
-        boolean equals;
         
         // To prevent null pointer exceptions from appearing each time the current artifact of this is null
         if (this.currentArtifact == null) {
-        	if (hero.currentArtifact == null) {
-        		equals = true;
-        	}
-        	else {
-        		equals = false;
-        	}
+        	if (hero.currentArtifact != null) return false;
         }
-        else {
-        	equals = this.currentArtifact.equals(hero.currentArtifact);
-        }
+        else if (this.currentArtifact.equals(hero.currentArtifact) == false) return false;
         
-     // To prevent null pointer exceptions from appearing each time the current weapon of this is null
+        // To prevent null pointer exceptions from appearing each time the current weapon of this is null
         if (this.currentWeapon == null) {
-        	if (hero.currentWeapon != null) {
-        		equals = false;
-        	}
+        	if (hero.currentWeapon != null) return false;
         }
-        else {
-        	equals = equals && this.currentWeapon.equals(hero.currentWeapon);
-        }
+        else if (this.currentWeapon.equals(hero.currentWeapon) == false) return false;
         
         return super.equals(o) && this.level == hero.level && this.currentExp == hero.currentExp 
         		&& this.inventory.equals(hero.inventory);
@@ -368,7 +297,7 @@ public class Hero extends LivingEntity {
 	public boolean isEnemyAround(Enemy[] enemies, Boss[] bosses) {
 
 		for (Enemy enemy : enemies) {
-			if (enemy.getHP() > 0) {
+			if (enemy.getHP() > 0 && enemy.isVisible() == true) {
 				if (enemy.getY() == this.getY() - 1 && enemy.getX() == this.getX()) {
 					return true;
 				}
@@ -384,7 +313,7 @@ public class Hero extends LivingEntity {
 			}
 		}
 		for (Boss boss : bosses) {
-			if (boss.getHP() > 0) {
+			if (boss.getHP() > 0 && boss.isVisible() == true) {
 				if (boss.getY() == this.getY() - 1 && boss.getX() == this.getX()) {
 					return true;
 				}
@@ -403,6 +332,33 @@ public class Hero extends LivingEntity {
 		return false;
 	}
 	
+	/**
+	 * Checks if there is a hostile living entity in the direct vicinity of the hero
+	 * @param bosses a array of boss enemies
+	 * @return Returns -1 if there is no boss around. Else return the boss' index in its associated array
+	 */
+	public int isBossAround(Boss[] bosses) {
+
+		for (int indexBoss = 0; indexBoss < bosses.length; ++indexBoss) {
+			if (bosses[indexBoss].getHP() > 0 && bosses[indexBoss].isVisible() == true) {
+				if (bosses[indexBoss].getY() == this.getY() - 1 && bosses[indexBoss].getX() == this.getX()) {
+					return indexBoss;
+				}
+				else if (bosses[indexBoss].getY() == this.getY() + 1 && bosses[indexBoss].getX() == this.getX()) {
+					return indexBoss;
+				}
+				else if (bosses[indexBoss].getX() == this.getX() - 1 && bosses[indexBoss].getY() == this.getY()) {
+					return indexBoss;
+				}
+				else if (bosses[indexBoss].getX() == this.getX() + 1 && bosses[indexBoss].getY() == this.getY()) {
+					return indexBoss;
+				}
+			}
+		}
+		
+		return -1;
+	}
+	
 	
 	/**
 	 * Search the names and indexes of the enemies around the hero
@@ -414,7 +370,7 @@ public class Hero extends LivingEntity {
 	public EntityIdentity[] whoIsAround(Enemy[] enemies, Boss[] bosses) {
 		EntityIdentity[] enemiesNames = new EntityIdentity[4];
 		for (int indexEnemy = 0; indexEnemy < enemies.length; ++indexEnemy) { 
-			if (enemies[indexEnemy].getHP() > 0) {
+			if (enemies[indexEnemy].getHP() > 0 && enemies[indexEnemy].isVisible() == true) {
 				if (enemies[indexEnemy].getY() == this.getY() - 1 && enemies[indexEnemy].getX() == this.getX()) {
 					enemiesNames[0] = new EntityIdentity(enemies[indexEnemy], indexEnemy);
 				}
@@ -430,7 +386,7 @@ public class Hero extends LivingEntity {
 			}
 		} 
 		for (int indexBoss = 0; indexBoss < bosses.length; ++indexBoss) {
-			if (bosses[indexBoss].getHP() > 0) {
+			if (bosses[indexBoss].getHP() > 0 && bosses[indexBoss].isVisible() == true) {
 				if (bosses[indexBoss].getY() == this.getY() - 1 && bosses[indexBoss].getX() == this.getX()) {
 					enemiesNames[0] = new EntityIdentity(bosses[indexBoss], indexBoss);
 				}
@@ -604,14 +560,14 @@ public class Hero extends LivingEntity {
 		 ++this.level;
 		 this.nextLevelExp = this.nextLevelExp + Math.floor(this.nextLevelExp * (this.level - 1) * 0.1);
 		 // Update HP
-		 this.currentMaxHP = this.currentMaxHP + 5;
-		 this.setHP(this.getHP() + 5);
+		 this.currentMaxHP = this.currentMaxHP + HP_LEVEL_UP_BONUS;
+		 this.setHP(this.getHP() + HP_LEVEL_UP_BONUS);
 		 // Update Attack
-		 this.setAtk(this.getAtk() + 3);
+		 this.setAtk(this.getAtk() + ATK_LEVEL_UP_BONUS);
 		 // Update Defense
-		 this.setDef(this.getDef() + 1);
+		 this.setDef(this.getDef() + DEF_LEVEL_UP_BONUS);
 		 // Update Speed
-		 this.setSpeed(this.getSpeed() + 2);
+		 this.setSpeed(this.getSpeed() + SPD_LEVEL_UP_BONUS);
 		 Message.nextLevel(this);
 	}
 	
@@ -637,7 +593,7 @@ public class Hero extends LivingEntity {
 	public EntityIdentity checkUnder(Teleport[] teleports) {
 		if (teleports != null) {
 			for (int indexTeleport = 0; indexTeleport < teleports.length; ++indexTeleport) {
-				if ((teleports[indexTeleport].getxTerminal1() == this.getX() && teleports[indexTeleport].getyTerminal1() == this.getY()) || (teleports[indexTeleport].getxTerminal2() == this.getX() && teleports[indexTeleport].getyTerminal2() == this.getY())) {
+				if ((teleports[indexTeleport].getTerminal1().getX() == this.getX() && teleports[indexTeleport].getTerminal1().getY() == this.getY()) || (teleports[indexTeleport].getTerminal2().getX() == this.getX() && teleports[indexTeleport].getTerminal2().getY() == this.getY())) {
 					return new EntityIdentity(teleports[indexTeleport], indexTeleport);
 				}
 			}
@@ -650,14 +606,14 @@ public class Hero extends LivingEntity {
 	 * @param teleport the Teleport which will be interacted with.
 	 */
 	public void useTeleport(Teleport teleport) {
-		if (teleport.getxTerminal1() == this.getX() && teleport.getyTerminal1() == this.getY()) {
-			this.setX(teleport.getxTerminal2());
-			this.setY(teleport.getyTerminal2());
+		if (teleport.getTerminal1().getX() == this.getX() && teleport.getTerminal1().getY() == this.getY()) {
+			this.setX(teleport.getTerminal2().getX());
+			this.setY(teleport.getTerminal2().getY());
 			Message.usesTeleport(this, teleport, 2);
 		}
-		else if (teleport.getxTerminal2() == this.getX() && teleport.getyTerminal2() == this.getY()) {
-			this.setX(teleport.getxTerminal1());
-			this.setY(teleport.getyTerminal1());
+		else if (teleport.getTerminal2().getX() == this.getX() && teleport.getTerminal2().getY() == this.getY()) {
+			this.setX(teleport.getTerminal1().getX());
+			this.setY(teleport.getTerminal1().getY());
 			Message.usesTeleport(this, teleport, 1);
 		}
 	}
@@ -669,11 +625,11 @@ public class Hero extends LivingEntity {
 	 */
 	public void useTeleport(Teleport[] teleports) {
 		for (Teleport teleport : teleports) {
-			if (teleport.getxTerminal1() == this.getX() && teleport.getyTerminal1() == this.getY()) {
+			if (teleport.getTerminal1().getX() == this.getX() && teleport.getTerminal1().getY() == this.getY()) {
 				this.useTeleport(teleport);
 				break;
 			}
-			else if (teleport.getxTerminal2() == this.getX() && teleport.getyTerminal2() == this.getY()) {
+			else if (teleport.getTerminal2().getX() == this.getX() && teleport.getTerminal2().getY() == this.getY()) {
 				this.useTeleport(teleport);
 				break;
 			}

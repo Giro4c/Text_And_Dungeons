@@ -5,9 +5,11 @@ import the_game.Chest;
 import the_game.create.Create;
 import the_game.Enemy;
 import the_game.EntityIdentity;
+import the_game.Game;
 import the_game.Hero;
 import the_game.Message;
 import the_game.Teleport;
+import the_game.Wall;
 
 public class FightAction {
 
@@ -60,15 +62,19 @@ public class FightAction {
 	 * @param bosses a Boss array containing all hostile bosses entities that can be attacked by the hero. <em>Include known and hidden bosses.</em>
 	 * @return Whether or not it still is the hero's turn or not
 	 */
-	public static boolean executeCommand(String[] command, Hero hero, int[][] walls, Chest[] chests, Teleport[] teleports, Enemy[] enemies, Boss[] bosses) {
+	public static boolean executeCommand(String[] command, Hero hero, Wall[] walls, Chest[] chests, Teleport[] teleports, Enemy[] enemies, Boss[] bosses) {
 		
 		if (command[0].equals("inventory")) {
 			Message.showInventory(hero);
+			Game.lastValidCommand = command;
+			return true;
 		}
 		
 		
 		else if (command[0].equals("hero") && command.length > 1 && command[1].equals("info")) {
 			Message.showHero(hero);
+			Game.lastValidCommand = command;
+			return true;
 		}
 		
 		
@@ -80,6 +86,7 @@ public class FightAction {
 				int numPotion = Integer.parseInt(command[2]);
 				if (numPotion != 0 && numPotion <= hero.getInventory().getPotions().length && hero.getInventory().getPotions()[numPotion - 1] != null) {
 					hero.usePotion(hero.getInventory().getPotions()[numPotion - 1]);
+					Game.lastValidCommand = command;
 					return false;
 				}
 				else {
@@ -101,10 +108,12 @@ public class FightAction {
 					if (enemyAround != null && enemyAround.getEntity().getName().toLowerCase().equals(command[1])) {
 						if (enemyAround.getEntity().getType().equals("Opposing Warrior") || enemyAround.getEntity().getType().equals("Monster")) {
 							hero.attack(enemies[enemyAround.getIndex()]);
+							Game.lastValidCommand = command;
 							return false;
 						}
 						else if (enemyAround.getEntity().getType().contains("Boss")) {
 							hero.attack(bosses[enemyAround.getIndex()]);
+							Game.lastValidCommand = command;
 							return false;
 						}
 						else {
@@ -131,11 +140,13 @@ public class FightAction {
 					if (enemyAround != null && enemyAround.getEntity().getName().toLowerCase().equals(command[1])) {
 						if (enemyAround.getEntity().getType().equals("Opposing Warrior") || enemyAround.getEntity().getType().equals("Monster")) {
 							Message.checkEnemy(enemies[enemyAround.getIndex()]);
-							break;
+							Game.lastValidCommand = command;
+							return true;
 						}
 						else if (enemyAround.getEntity().getType().contains("Boss")) {
 							Message.showBoss(bosses[enemyAround.getIndex()]);
-							break;
+							Game.lastValidCommand = command;
+							return true;
 						}
 						else {
 							Message.notValid("Enemy Name Input");
@@ -153,6 +164,8 @@ public class FightAction {
 			if (command.length > 1) {
 				if (command[1].equals("map")) { // For map
 					Message.showMap(Create.createMap(walls, chests, teleports, enemies, bosses, hero));
+					Game.lastValidCommand = command;
+					return true;
 				}
 				else if (command[1].equals("weapon")) { // For weapons
 					if (command.length < 3) {
@@ -162,6 +175,8 @@ public class FightAction {
 						int numWeapon = Integer.parseInt(command[2]);
 						if (numWeapon != 0 && numWeapon <= hero.getInventory().getWeapons().length && hero.getInventory().getWeapons()[numWeapon - 1] != null) {
 							Message.showItem(hero.getInventory().getWeapons()[numWeapon - 1]);
+							Game.lastValidCommand = command;
+							return true;
 						}
 						else {
 							Message.notExists("Weapon");
@@ -176,6 +191,8 @@ public class FightAction {
 						int numArtifact = Integer.parseInt(command[2]);
 						if (numArtifact != 0 && numArtifact <= hero.getInventory().getArtifacts().length && hero.getInventory().getArtifacts()[numArtifact - 1] != null) {
 							Message.showItem(hero.getInventory().getArtifacts()[numArtifact - 1]);
+							Game.lastValidCommand = command;
+							return true;
 						}
 						else {
 							Message.notExists("Artifact");
@@ -190,6 +207,8 @@ public class FightAction {
 						int numPotion = Integer.parseInt(command[2]);
 						if (numPotion != 0 && numPotion <= hero.getInventory().getPotions().length && hero.getInventory().getPotions()[numPotion - 1] != null) {
 							Message.showItem(hero.getInventory().getPotions()[numPotion - 1]);
+							Game.lastValidCommand = command;
+							return true;
 						}
 						else {
 							Message.notExists("Potion");
@@ -216,6 +235,7 @@ public class FightAction {
 						int numWeapon = Integer.parseInt(command[2]);
 						if (numWeapon != 0 && numWeapon <= hero.getInventory().getWeapons().length && hero.getInventory().getWeapons()[numWeapon - 1] != null) {
 							hero.equipWeapon(hero.getInventory().getWeapons()[numWeapon - 1]);
+							Game.lastValidCommand = command;
 							return false;
 						}
 						else {
@@ -231,6 +251,7 @@ public class FightAction {
 						int numArtifact = Integer.parseInt(command[2]);
 						if (numArtifact != 0 && numArtifact <= hero.getInventory().getArtifacts().length && hero.getInventory().getArtifacts()[numArtifact - 1] != null) {
 							hero.equipArtifact(hero.getInventory().getArtifacts()[numArtifact - 1]);
+							Game.lastValidCommand = command;
 							return false;
 						}
 						else {
@@ -253,6 +274,7 @@ public class FightAction {
 				if (command[1].equals("weapon")) { // For weapons
 					if (hero.getCurrentWeapon() != null) {
 						hero.unEquipWeapon();
+						Game.lastValidCommand = command;
 						return false;
 					}
 					else {
@@ -262,6 +284,7 @@ public class FightAction {
 				else if (command[1].equals("artifact")) { // For artifacts
 					if (hero.getCurrentArtifact() != null) {
 						hero.unEquipArtifact();
+						Game.lastValidCommand = command;
 						return false;
 					}
 					else {
@@ -282,6 +305,7 @@ public class FightAction {
 			Message.notRecognized();
 		}
 		
+		Game.lastValidCommand = command;
 		return true;
 	}
 	

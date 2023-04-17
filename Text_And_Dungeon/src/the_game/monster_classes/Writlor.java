@@ -4,8 +4,8 @@ import the_game.Monster;
 
 public class Writlor extends Monster {
 
-	public Writlor(int numInSpecie, int x, int y) {
-		super("Writlor " + numInSpecie, x, y, 50, 10, 26, 10, 40);
+	public Writlor(int numInSpecie, int x, int y, boolean visible) {
+		super("Writlor " + numInSpecie, x, y, visible, 50, 10, 26, 10, 40);
 	}
 
 }
