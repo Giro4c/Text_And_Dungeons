@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"the_game"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"the_game"},{"l":"the_game.action"},{"l":"the_game.create"},{"l":"the_game.Deprecated_classes"},{"l":"the_game.enemyWarrior_classes"},{"l":"the_game.monster_classes"}];updateSearchResults();
