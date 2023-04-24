@@ -1,7 +1,16 @@
 package the_game;
 
+/**
+ * A class which represent a teleport in the game. It allows the player to teleport from one location to another.
+ * @author Camille Girodengo
+ *
+ */
 public class Teleport extends Entity {
 
+	/* -------------------------------------------------------------------- *
+	 * ---------------------------CONSTRUCTORS----------------------------- *
+	 * -------------------------------------------------------------------- */
+	
 	public Teleport(String name, int xTerminal1, int yTerminal1, int xTerminal2, int yTerminal2, boolean visible) {
 		super(name, "Teleport");
 		this.terminal1 = new Terminal(xTerminal1, yTerminal1, visible);
@@ -13,6 +22,12 @@ public class Teleport extends Entity {
 		this.terminal1 = new Terminal(xTerminal1, yTerminal1, visible1);
 		this.terminal2 = new Terminal(xTerminal2, yTerminal2, visible2);
 	}
+	
+	
+	
+	/* -------------------------------------------------------------------- *
+	 * ------------------VARIABLES / GETTERS / SETTERS--------------------- *
+	 * -------------------------------------------------------------------- */
 
 	private Terminal terminal1;
 	private Terminal terminal2;
@@ -33,6 +48,12 @@ public class Teleport extends Entity {
 		this.terminal2 = terminal2;
 	}
 
+	
+	
+	/* -------------------------------------------------------------------- *
+	 * -----------------------------TO STRING------------------------------ *
+	 * -------------------------------------------------------------------- */
+	
 	@Override
 	public String toString() {
 		String teleport = super.toString() + "Coordinates Terminal 1 : " + this.getTerminal1().getX() + ", " + this.getTerminal1().getY() + '\n';

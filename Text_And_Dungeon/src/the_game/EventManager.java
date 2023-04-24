@@ -5,24 +5,34 @@ import the_game.create.Create;
 
 public class EventManager {
 
-	private int voidAttackCount;
-	private int sumEnemiesDown;
-	private ArrayList<Event> eventList = new ArrayList<Event>();
+	/* -------------------------------------------------------------------- *
+	 * ---------------------------CONSTRUCTORS----------------------------- *
+	 * -------------------------------------------------------------------- */
 	
 	public EventManager() {
 		super();
 		this.voidAttackCount = 0;
 		this.sumEnemiesDown = 0;
 		if (Create.getMapID() == 1) {
-			eventList.add(new Event(1, 5));
-			eventList.get(0).getIntermediaryEvents().set(0, new Event(1, 2));
+			eventList.add(Event.getEventVoid());
 		}
 		else if (Create.getMapID() == 2) {
-			eventList.add(new Event(1));
-			eventList.add(new Event(2, 4));
+			eventList.add(Event.getEventCaveVisibility());
+			eventList.add(Event.getEventAllEnemiesDown());
 		}
 	}
 
+	
+	
+	/* -------------------------------------------------------------------- *
+	 * ------------------VARIABLES / GETTERS / SETTERS--------------------- *
+	 * -------------------------------------------------------------------- */
+	
+	private int voidAttackCount;
+	private int sumEnemiesDown;
+	private ArrayList<Event> eventList = new ArrayList<Event>();
+	
+	
 	public int getVoidAttackCount() {
 		return voidAttackCount;
 	}
@@ -43,45 +53,78 @@ public class EventManager {
 		return eventList;
 	} 
 
+	
+	
+	/* -------------------------------------------------------------------- *
+	 * ----------------------------ALL METHODS----------------------------- *
+	 * -------------------------------------------------------------------- */
+	
+	/**
+	 * Verify all events that could possibly be activated or deactivated and execute the necessary actions by checking the state of various variables.
+	 * @param hero the playable character of the game
+	 * @param bosses a Boss array which contains all the bosses of the current map
+	 * @param teleports a Teleport array which contains all the teleports of the current map and their terminals
+	 * @param walls a Wall array which contains all the walls of the current map
+	 * @param chests a Chest array which contains all the chests of the current map
+	 * @param enemies a Enemy array which contains all the enemies of the current map
+	 * @throws InterruptedException
+	 */
 	public void verifyIfEventAndTrigger(Hero hero, Boss[] bosses, Teleport[] teleports, Wall[] walls, Chest[] chests, Enemy[] enemies) throws InterruptedException {
 		this.checkVariables(hero, bosses, teleports, walls, chests, enemies);
-		if (Create.getMapID() == 1) {
-			if (eventList.get(0).isTriggered() == false && voidAttackCount > 0) {
-				Message.voidAttack(hero, voidAttackCount, eventList.get(0));
-				if (eventList.get(0).canBeTriggered() == true) { // All IE have been triggered so the void Event has to be triggered
-					eventList.get(0).setTriggered(true);
-					triggerEvent(1, hero, bosses, teleports, walls, chests, enemies);
+		
+		for (Event event : this.eventList) {
+			if (event.getId() == Event.getEventVoid().getId()) { // Void Event
+				if (event.isTriggered() == false && voidAttackCount > 0) {
+					Message.voidAttack(hero, voidAttackCount, event);
+					if (event.canBeTriggered() == true) { // All IE have been triggered so the void Event has to be triggered
+						event.setTriggered(true);
+						triggerEvent( Event.getEventVoid().getId(), hero, bosses, teleports, walls, chests, enemies);
+					}
 				}
 			}
-		}
-		else if (Create.getMapID() == 2) {
-			// Event 1 : Appearance (true) / Disappearance (false) of the hidden cave
-			if (eventList.get(0).isTriggered() == false) {
-				if (hero.getX()==4 && hero.getY()==21) {
-					eventList.get(0).setTriggered(true);
-					triggerEvent(1, hero, bosses, teleports, walls, chests, enemies);
+			else if (event.getId() == Event.getEventCaveVisibility().getId()) { // Appearance / Disappearance of a hidden cave
+				if (Create.getMapID() == 2) {
+					if (event.isTriggered() == false) {
+						if (hero.getX()==4 && hero.getY()==21) {
+							eventList.get(0).setTriggered(true);
+							triggerEvent(Event.getEventCaveVisibility().getId(), hero, bosses, teleports, walls, chests, enemies);
+						}
+					}
+					else if (hero.getX()==11 && hero.getY()==24) {
+						eventList.get(0).setTriggered(false);
+						triggerEvent(Event.getEventCaveVisibility().getId(), hero, bosses, teleports, walls, chests, enemies);
+					}
 				}
 			}
-			else if (hero.getX()==11 && hero.getY()==24) {
-				eventList.get(0).setTriggered(false);
-				triggerEvent(1, hero, bosses, teleports, walls, chests, enemies);
+			else if (event.getId() == Event.getEventAllEnemiesDown().getId()) { // Event related to the situation: "all enemies down"
+				if (event.isTriggered() == false) {
+					Message.WarningEnemiesDownCount(sumEnemiesDown, enemies, bosses, event);
+					if (event.canBeTriggered() == true) { // All IE have been triggered so the hidden Event has to be triggered
+						event.setTriggered(true);
+						triggerEvent(Event.getEventAllEnemiesDown().getId(), hero, bosses, teleports, walls, chests, enemies);
+					}
+				}
 			}
 			
-			// Event 2 : Appearance of the hidden boss
-			if (eventList.get(1).isTriggered() == false) {
-				Message.WarningEnemiesDownCount(sumEnemiesDown, enemies, bosses, eventList.get(1));
-				if (eventList.get(1).canBeTriggered() == true) { // All IE have been triggered so the void Event has to be triggered
-					eventList.get(1).setTriggered(true);
-					triggerEvent(2, hero, bosses, teleports, walls, chests, enemies);
-				}
-			}
-			
 		}
+		
 	}
 	
+	/**
+	 * The function dedicated to the instructions to execute when a specific event is triggered.
+	 * @param eventID the ID of the main event that has been triggered
+	 * @param hero the playable character of the game
+	 * @param bosses a Boss array which contains all the bosses of the current map
+	 * @param teleports a Teleport array which contains all the teleports of the current map and their terminals
+	 * @param walls a Wall array which contains all the walls of the current map
+	 * @param chests a Chest array which contains all the chests of the current map
+	 * @param enemies a Enemy array which contains all the enemies of the current map
+	 * @return Returns true if the event's ID is recognized by the function and all instructions have been executed. Returns false if the function doesn't recognize the ID.
+	 * @throws InterruptedException
+	 */
 	public boolean triggerEvent(int eventID, Hero hero, Boss[] bosses, Teleport[] teleports, Wall[] walls, Chest[] chests, Enemy[] enemies) throws InterruptedException {
-		if (Create.getMapID() == 1) {
-			if (eventID == 1) {
+		if (eventID == Event.getEventVoid().getId()) {
+			if (Create.getMapID() == 1) {
 				hero.setX(17);
 				hero.setY(5);
 				bosses[1].setVisible(true);
@@ -90,8 +133,8 @@ public class EventManager {
 				return true;
 			}
 		}
-		else if (Create.getMapID() == 2) {
-			if (eventID == 1) { // Shows or hide the visible entities in the hidden cave on the middle left of the map
+		else if (eventID == Event.getEventCaveVisibility().getId()) {
+			if (Create.getMapID() == 2) { // Shows or hide the visible entities in the hidden cave on the middle left of the map
 				
 				// Show/Hide teleport terminal
 				teleports[5].getTerminal1().setVisible(!teleports[5].getTerminal1().isVisible());
@@ -133,14 +176,26 @@ public class EventManager {
 				return true;
 			}
 			
-			if (eventID == 2) {
+		}
+		else if (eventID == Event.getEventAllEnemiesDown().getId()) {
+			if (Create.getMapID() == 2) {
 				bosses[0].setVisible(false);
 				bosses[1].setVisible(true);
+				return true;
 			}
 		}
 		return false;
 	}
 	
+	/**
+	 * A procedure to update event related variables such as voidAttackCout and sumEnemiesDown. The updates depend on the last valid command typed by the player and the map currently played.
+	 * @param hero the playable character of the game
+	 * @param bosses a Boss array which contains all the bosses of the current map
+	 * @param teleports a Teleport array which contains all the teleports of the current map and their terminals
+	 * @param walls a Wall array which contains all the walls of the current map
+	 * @param chests a Chest array which contains all the chests of the current map
+	 * @param enemies a Enemy array which contains all the enemies of the current map
+	 */
 	private void checkVariables(Hero hero, Boss[] bosses, Teleport[] teleports, Wall[] walls, Chest[] chests, Enemy[] enemies) {
 		if (Create.getMapID() == 1) {
 			if (Test.lastValidCommand == null || Test.lastValidCommand.length == 0) {
@@ -155,6 +210,7 @@ public class EventManager {
 				this.eventList.get(0).clear();
 			}
 		}
+		
 		if (Create.getMapID() == 2) {
 			if (Test.lastValidCommand != null && Test.lastValidCommand.length > 1) {
 				for (Enemy enemy : enemies) {

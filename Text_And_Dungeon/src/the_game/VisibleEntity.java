@@ -1,17 +1,32 @@
 package the_game;
 
+/**
+ * A class which represent any entity that can be showed on the game map
+ * @author Camille Girodengo
+ *
+ */
 public class VisibleEntity extends Entity{
 
-	private int x = -1;
-	private int y = -1;
-	private boolean visible;
-
+	/* -------------------------------------------------------------------- *
+	 * ---------------------------CONSTRUCTORS----------------------------- *
+	 * -------------------------------------------------------------------- */
+	
 	public VisibleEntity(String name, String type, int x, int y, boolean visible) {
 		super(name, type);
 		this.x = x;
 		this.y = y;
 		this.visible = visible;
 	}
+	
+	
+	
+	/* -------------------------------------------------------------------- *
+	 * ------------------VARIABLES / GETTERS / SETTERS--------------------- *
+	 * -------------------------------------------------------------------- */
+	
+	private int x;
+	private int y;
+	private boolean visible;
 
 	public int getX() {
 		return x;
@@ -36,11 +51,23 @@ public class VisibleEntity extends Entity{
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
+	
+	
+	
+	/* -------------------------------------------------------------------- *
+	 * -----------------------------TO STRING------------------------------ *
+	 * -------------------------------------------------------------------- */
 
 	@Override
 	public String toString() {
 		return super.toString() + "Coordinates : x=" + this.x + " y=" + this.y;
 	}
+	
+	
+	
+	/* -------------------------------------------------------------------- *
+	 * -------------------------------EQUALS------------------------------- *
+	 * -------------------------------------------------------------------- */
 	
 	@Override
 	public boolean equals(Object o) {

@@ -302,7 +302,7 @@ public class Message {
 	
 	
 	/* -------------------------------------------------------------------- *
-	 * ---------------------------SPECIAL MESSAGES------------------------- *
+	 * ---------------------------EVENT MESSAGES--------------------------- *
 	 * -------------------------------------------------------------------- */
 
 	public static void voidAttack(Hero hero, int voidAttackCount, Event event) throws InterruptedException {

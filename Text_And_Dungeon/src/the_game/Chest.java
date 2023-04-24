@@ -84,30 +84,25 @@ public class Chest extends VisibleEntity{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Chest chest = (Chest) o;
-        boolean equals = true;
         // To prevent null pointer exceptions from appearing each time the hidden artifact of this is null
         if (this.hiddenArtifact == null) {
         	if (chest.hiddenArtifact != null) return false;
         }
-        else {
-        	equals = this.hiddenArtifact.equals(chest.hiddenArtifact);
-        }
+        else if (this.hiddenArtifact.equals(chest.hiddenArtifact) == false) return false;
+        
         // To prevent null pointer exceptions from appearing each time the hidden weapon of this is null
         if (this.hiddenWeapon == null) {
         	if (chest.hiddenWeapon != null) return false;
         }
-        else {
-        	equals = equals && this.hiddenWeapon.equals(chest.hiddenWeapon);
-        }
+        else if (this.hiddenWeapon.equals(chest.hiddenWeapon) == false) return false;
+        
         // To prevent null pointer exceptions from appearing each time the hidden potion of this is null
         if (this.hiddenPotion == null) {
         	if (chest.hiddenPotion != null) return false;
         }
-        else {
-        	equals = equals && this.hiddenPotion.equals(chest.hiddenPotion);
-        }
+        else if (this.hiddenPotion.equals(chest.hiddenPotion) == false) return false;
         
-        return super.equals(o) && equals;
+        return super.equals(o);
     }
 	
 }

@@ -1,5 +1,10 @@
 package the_game;
 
+/**
+ * A class which represent a wall in the game
+ * @author Camille Girodengo
+ *
+ */
 public class Wall extends VisibleEntity{
 
 	public Wall(int x, int y, boolean visible) {
