@@ -3,6 +3,11 @@ package the_game;
 import java.util.ArrayList;
 import the_game.create.Create;
 
+/**
+ * A class used to manage all events during the game.
+ * @author Camille Girodengo
+ *
+ */
 public class EventManager {
 
 	/* -------------------------------------------------------------------- *
